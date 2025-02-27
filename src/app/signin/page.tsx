@@ -16,7 +16,6 @@ const SignIn = () => {
   // }, [session, router]);
 
   return (
-    // <SessionProvider>
     <Card
       title="Sign in with GitHub"
       hasButton
@@ -24,7 +23,6 @@ const SignIn = () => {
       isButtonDisabled={false}
       onButtonClick={() => signIn('github')}
     />
-    // </SessionProvider>
   );
 };
 export default SignIn;

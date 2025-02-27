@@ -2,19 +2,19 @@ import React from 'react';
 import Link from 'next/link';
 
 interface HeaderProps {
-  handleRenderAvatar: () => React.ReactNode;
+  children: React.ReactNode;
 }
 
-const Header: React.FC<HeaderProps> = ({ handleRenderAvatar }) => {  
+const Header: React.FC<HeaderProps> = ({ children }) => {  
 
   return (
-    <div className="navbar bg-base-100">
+    <div className="navbar bg-base-100 ring">
       <div className="flex-1">
         <Link href="/" className="btn btn-ghost text-xl">
           LexiGen
         </Link>
       </div>
-      {handleRenderAvatar()}
+      {children}
     </div>
   );
 };
