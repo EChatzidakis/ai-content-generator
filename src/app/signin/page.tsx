@@ -2,27 +2,35 @@
 import React from 'react';
 import { signIn } from 'next-auth/react';
 import Card from '../../components/ui/Card';
-// import { useRouter } from 'next/router';
-// import { SessionProvider } from 'next-auth/react';
+import Divider from '../../components/ui/Divider';
+import Button from '../../components/ui/Button';
 
 const SignIn = () => {
-  // const { data: session } = useSession();
-  // const router = useRouter();
-
-  // useEffect(() => {
-  //   if (session) {
-  //     router.push('/');
-  //   }
-  // }, [session, router]);
+  const cardContent = (
+    <>
+      <p>Sign in with GitHub</p>
+      <Button
+        onClick={() => signIn('github')}
+        color="black"
+      >
+        Sign in
+      </Button>
+      <Divider text="OR" />
+      <p>add credentials here</p>
+    </>
+  );
 
   return (
     <Card
-      title="Sign in with GitHub"
-      hasButton
+      title="Sign in!"
+      hasButton={false}
       buttonName="Sign in"
       isButtonDisabled={false}
       onButtonClick={() => signIn('github')}
-    />
+      widthClass='w-[350px]'
+    >
+      {cardContent}
+    </Card>
   );
 };
 export default SignIn;

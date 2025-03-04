@@ -20,6 +20,7 @@ export const AuthProvider = ({
     if (session) {
       const _user: User = session.user as User;
       _user.session_expiration = session.expires as string;
+      console.log('_user:', _user);
       setUser(_user);
     } else {
       setUser(null);
