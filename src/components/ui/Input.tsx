@@ -4,15 +4,17 @@ interface InputProps {
   placeholder: string;
   value: string;
   onChange: (value: string) => void;
+  type?: string;
 }
 
-const Input: React.FC<InputProps> = ({ placeholder, value = '', onChange }) => {
+const Input: React.FC<InputProps> = ({ placeholder, value = '', onChange, type = "text" }) => {
   return (
     <input
       className="input input-bordered w-full max-w-xs"
       placeholder={placeholder}
       value={value}
       onChange={(e) => onChange(e.target.value)}
+      type={type}
     />
   );
 };
