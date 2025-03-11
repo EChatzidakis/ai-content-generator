@@ -7,7 +7,8 @@ import bcrypt from 'bcrypt';
 //   id          String    @id @default(uuid())
 //   name        String
 //   email       String?    @unique
-//   password    String?
+//   password_hash String?
+//   password_salt String?
 //   image_url   String?
 //   provider    String?
 //   provider_user_id String?
@@ -15,7 +16,7 @@ import bcrypt from 'bcrypt';
 //   conversations Conversation[]
 // }
 
-export const createUser = async (user: NextAuthUser, account: Account) => {
+export const createUserFromProvider = async (user: NextAuthUser, account: Account) => {
   const userProviderId = user.id || account?.providerAccountId;
   if (!userProviderId) {
     console.error('No user ID found');
@@ -27,16 +28,17 @@ export const createUser = async (user: NextAuthUser, account: Account) => {
   );
   if (existingUser) {
     console.log('User exists. \nExiting...');
-    return true;
+    return existingUser;
   }
 
   const image_url = user.image;
   const provider = account.provider;
   const provider_user_id = userProviderId.toString();
   const name = user.name || `${provider}_user`;
+  const email = user.email;
 
   const newUser = await prisma.user.create({
-    data: { name, image_url, provider, provider_user_id }
+    data: { name, image_url, email, provider, provider_user_id }
   });
 
   return newUser;
@@ -52,13 +54,15 @@ export const createUserWithCredentials = async (name: string, email: string, pas
     throw new Error('User already exists with this email');
   }
 
-  const hashedPassword = await bcrypt.hash(password, 10); // Hash password with salt rounds = 10
+  const salt = await bcrypt.genSalt(10);
+  const hashedPassword = await bcrypt.hash(password, salt); 
 
   const newUser = await prisma.user.create({
     data: {
       name,
       email,
-      password: hashedPassword
+      password_hash: hashedPassword,
+      password_salt: salt
     }
   });
 
@@ -67,16 +71,7 @@ export const createUserWithCredentials = async (name: string, email: string, pas
 
 export const getUserByEmail = async (email: string) => {
   return prisma.user.findFirst({
-    where: { email },
-    select: {
-      id: true,
-      name: true,
-      email: true,
-      password: true,
-      provider: true,
-      image_url: true,
-      createdAt: true
-    }
+    where: { email }
   });
 };
 
@@ -86,9 +81,8 @@ export const getUserByEmail = async (email: string) => {
  * @returns The user object or null if not found
  */
 export const getUserById = async (id: string) => {
-  return prisma.user.findUnique({
-    where: { id },
-    select: { id: true, name: true, email: true, createdAt: true }
+  return prisma.user.findFirstOrThrow({
+    where: { id }
   });
 };
 
@@ -102,13 +96,6 @@ export const getUserByProviderUserId = async (providerUserId: string) => {
     return null;
   }
   return prisma.user.findFirst({
-    where: { provider_user_id: providerUserId },
-    select: {
-      id: true,
-      name: true,
-      email: true,
-      provider: true,
-      createdAt: true
-    }
+    where: { provider_user_id: providerUserId }
   });
 };

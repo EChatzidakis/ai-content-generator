@@ -1,26 +1,15 @@
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 import bcrypt from "bcrypt";
-import { getUserById } from "@/services/userService";
+import { createUserWithCredentials, getUserById, getUserByEmail } from "@/services/userService";
 
 export async function POST(req: Request) {
   try {
     const { name, email, password } = await req.json();
 
-    // Check if the email already exists
-    const existingUser = await prisma.user.findUnique({ where: { email } });
-    if (existingUser) {
-      return NextResponse.json({ error: "User already exists" }, { status: 400 });
-    }
+    const newUser = await createUserWithCredentials(name, email, password);
 
-    // Hash password before storing
-    const hashedPassword = await bcrypt.hash(password, 10);
-
-    const user = await prisma.user.create({
-      data: { name, email, password: hashedPassword },
-    });
-
-    return NextResponse.json(user, { status: 201 });
+    return NextResponse.json(newUser, { status: 201 });
   } catch (error) {
     console.error(error);
     return NextResponse.json({ error: "Failed to create user" }, { status: 500 });
@@ -29,7 +18,7 @@ export async function POST(req: Request) {
 
 export async function PUT(req: Request) {
   try {
-    const { id, name, email, password } = await req.json();
+    const { id, name, email, password, image_url, provider, provider_user_id } = await req.json();
 
     // Check if user exists
     const existingUser = await getUserById(id);
@@ -37,15 +26,30 @@ export async function PUT(req: Request) {
       return NextResponse.json({ error: "User not found" }, { status: 404 });
     }
 
-    // Hash password if it's being updated
-    const hashedPassword = password ? await bcrypt.hash(password, 10) : undefined;
+    // Ensure email is unique (if it's being changed)
+    if (email && email !== existingUser.email) {
+      const existingEmailUser = await getUserByEmail(email);
+      if (existingEmailUser) {
+        return NextResponse.json({ error: "Email already in use" }, { status: 400 });
+      }
+    }    
 
-    const updatedUser = await prisma.user.update({
-      where: { id },
-      data: { name, email, password: hashedPassword },
-    });
+   // Hash password if provided
+   const updatedFields = { name, email, image_url, provider, provider_user_id, password_hash: existingUser.password_hash, password_salt: existingUser.password_salt };
 
-    return NextResponse.json(updatedUser);
+   if (password) {
+     const password_salt = await bcrypt.genSalt(10);
+     const password_hash = await bcrypt.hash(password, password_salt);
+     updatedFields.password_hash = password_hash;
+     updatedFields.password_salt = password_salt;
+   }
+
+   const updatedUser = await prisma.user.update({
+     where: { id },
+     data: updatedFields,
+   });
+
+   return NextResponse.json(updatedUser);
   } catch (error) {
     console.error(error);
     return NextResponse.json({ error: "Failed to update user" }, { status: 500 });
