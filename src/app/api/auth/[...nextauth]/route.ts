@@ -3,11 +3,10 @@ import GithubProvider from 'next-auth/providers/github';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import bcrypt from 'bcrypt';
 import type { AuthOptions } from 'next-auth';
-import { createUser, getUserByProviderUserId, getUserByEmail } from '@/services/userService';
+import { createUserFromProvider, getUserByProviderUserId, getUserByEmail, getUserById } from '@/services/userService';
 
 // For more information on options, go to:
 // https://next-auth.js.org/configuration/options
-// TODO Add credentials provider
 
 export const authOptions: AuthOptions = {
   providers: [
@@ -30,13 +29,19 @@ export const authOptions: AuthOptions = {
         if (!user) {
           throw new Error('No user found with this email');
         }
-  
-        const isPasswordValid = await bcrypt.compare(credentials.password, user.password);
-        if (!isPasswordValid) {
+
+        if (!user.password_hash) {
+          throw new Error('User has no password set');
+        }
+        
+        const isMatch = await bcrypt.compare(credentials.password, user.password_hash);
+        if (!isMatch) {
           throw new Error('Invalid password');
         }
-  
-        return { id: user.id, name: user.name, email: user.email };
+
+        const { id, name, email, image_url } = user;
+
+        return { id, name, email, image_url };
       }
     })
   ],
@@ -49,19 +54,28 @@ export const authOptions: AuthOptions = {
       return baseUrl; // Always redirect to "/"
     },
     async signIn({ user, account }) {
-      const userProviderId = user.id;
-      const existingUser = await getUserByProviderUserId(userProviderId);
-      console.log('existingUser:', existingUser);
-      if (!existingUser) {
-        if (!account) {
-          console.error('Account is null');
+      const authType = account?.type || 'credentials';
+
+      if (authType === 'credentials') {
+        const _user = await getUserById(user.id);
+        if (!_user) {
+          console.error('User not found');
           return false;
         }
-      
-        console.log('User not found, creating user');
-        await createUser(user, account);
+      } else {
+        const userProviderId = user.id;
+        const existingUser = await getUserByProviderUserId(userProviderId);
+        
+        if (!existingUser) {
+          if (!account) {
+            console.error('Account is null');
+            return false;
+          }
+        
+          console.warn('User not found, creating user');
+          await createUserFromProvider(user, account);
+        }
       }
-
       return true;
     },
     async session({ session, token, user }) {
