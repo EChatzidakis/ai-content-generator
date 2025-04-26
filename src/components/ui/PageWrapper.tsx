@@ -1,14 +1,23 @@
+"use client";
 import React from "react";
+import styled from "styled-components";
 
 interface PageWrapperProps {
   children: React.ReactNode;
 }
 
+const StyledPageWrapper = styled.div`
+  display: flex;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  `;
+
 const PageWrapper: React.FC<PageWrapperProps> = ({ children }) => {
   return (
-    <div className="flex screen-minus-header w-screen items-center justify-center bg bg-">
+    <StyledPageWrapper>
       {children}
-    </div>
+    </StyledPageWrapper>
   );
 };
 

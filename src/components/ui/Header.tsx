@@ -1,21 +1,39 @@
 import React from 'react';
 import Link from 'next/link';
+import styled from 'styled-components';
+import AppBar from '@mui/material/AppBar';
+import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh';
 
 interface HeaderProps {
   children: React.ReactNode;
 }
 
-const Header: React.FC<HeaderProps> = ({ children }) => {  
+const TitleFlexWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 125px;
+  padding: 16px;
+`;
 
+const FlexWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 5px 16px;
+`;
+
+const Header: React.FC<HeaderProps> = ({ children }) => {
   return (
-    <div className="navbar bg-base-100 ring">
-      <div className="flex-1">
-        <Link href="/" className="btn btn-ghost text-xl">
-          LexiGen
-        </Link>
-      </div>
-      {children}
-    </div>
+    <AppBar position="static">
+      <FlexWrapper>
+        <TitleFlexWrapper>
+          <AutoFixHighIcon />
+          <Link href="/">LexiGen</Link>
+        </TitleFlexWrapper>
+        {children}
+      </FlexWrapper>
+    </AppBar>
   );
 };
 

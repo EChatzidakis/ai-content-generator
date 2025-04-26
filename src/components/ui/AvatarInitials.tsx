@@ -1,8 +1,9 @@
 import React from 'react';
+import Avatar from '@mui/material/Avatar';
+import { deepPurple } from '@mui/material/colors';
 
 interface AvatarInitialsProps {
   name?: string;
-  src?: string;
 }
 
 const AvatarInitials: React.FC<AvatarInitialsProps> = ({ name = 'U' }) => {
@@ -16,11 +17,9 @@ const AvatarInitials: React.FC<AvatarInitialsProps> = ({ name = 'U' }) => {
 
   const initials = getInitials(name);
   return (
-    <div tabIndex={0} className="avatar-placeholder avatar">
-      <div className="w-8 rounded-full bg-neutral text-neutral-content">
-        <span className="text-lg">{initials}</span>
-      </div>
-    </div>
+    <Avatar sx={{ bgcolor: deepPurple[500], width: 56, height: 56 }}>
+      {initials}
+    </Avatar>
   );
 };
 

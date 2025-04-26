@@ -1,26 +1,16 @@
 import React from 'react';
-
-interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'primary' | 'secondary' | 'disabled';
-}
-
-const VARIANTS = {
-  primary: 'btn-primary',
-  secondary: 'btn-secondary',
-  disabled: 'btn-disabled'
-};
+import { Button as MuiButton, ButtonProps } from '@mui/material';
 
 const Button: React.FC<ButtonProps> = ({
-  variant = 'primary',
-  disabled = variant === 'disabled',
+  variant = 'contained',
+  disabled = false,
   children,
   ...props
 }) => {
-  const classNames = VARIANTS[variant];
   return (
-    <button className={`btn ${classNames}`} disabled={disabled} {...props}>
+    <MuiButton variant={variant} disabled={disabled} {...props}>
       {children}
-    </button>
+    </MuiButton>
   );
 };
 

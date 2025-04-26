@@ -1,22 +1,9 @@
 import React from 'react';
+import { TextFieldProps } from '@mui/material/TextField';
+import TextField from '@mui/material/TextField';
 
-interface InputProps {
-  placeholder: string;
-  value: string;
-  onChange: (value: string) => void;
-  type?: string;
-}
-
-const Input: React.FC<InputProps> = ({ placeholder, value = '', onChange, type = "text" }) => {
-  return (
-    <input
-      className="input input-bordered w-full max-w-xs"
-      placeholder={placeholder}
-      value={value}
-      onChange={(e) => onChange(e.target.value)}
-      type={type}
-    />
-  );
+const Input: React.FC<TextFieldProps> = (props) => {
+  return <TextField variant="outlined" {...props} />;
 };
 
 export default Input;
