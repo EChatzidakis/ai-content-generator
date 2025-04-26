@@ -2,7 +2,7 @@
 import React from 'react';
 import { useAuthStore } from '../../store/auth/authStore';
 import { signOut } from 'next-auth/react';
-import { Avatar, AvatarInitials, Dropdown } from '../ui';
+import { Avatar, AvatarInitials, Menu } from '../UI';
 
 const PageHeaderAvatar = () => {
   const user = useAuthStore((state) => state.user);
@@ -21,13 +21,16 @@ const PageHeaderAvatar = () => {
   };
 
   const handleSignOut = () => signOut();
-  const signOutItem = <div onClick={handleSignOut}>Sign out</div>;
-  const dropdownItems = [signOutItem];
+  const signOutMenuItem = {
+    label: 'Sign out',
+    onClick: handleSignOut,
+  };
+  const dropdownItems = [signOutMenuItem];
 
   return (
-    <Dropdown listItems={dropdownItems}>
+    <Menu listItems={dropdownItems}>
       {handleRenderAvatar()}
-    </Dropdown>
+    </Menu>
   );
 };
 
