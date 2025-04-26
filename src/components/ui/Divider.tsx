@@ -1,15 +1,11 @@
+'use client';
 import React from 'react';
+import { Divider as MuiDivider, DividerProps } from '@mui/material';
 
-interface DividerProps {
-  isHorizontal?: boolean;
-  text?: string;
-}
-
-const Divider: React.FC<DividerProps> = ({ isHorizontal, text = '' }) => {
-  const classNames = isHorizontal ? 'divider-horizontal' : '';
-  return (
-      <div className={`divider ${classNames}`}>{text}</div>
-  );
-};
+const Divider: React.FC<DividerProps> = ({ children, ...props }) => (
+  <MuiDivider sx={{ my: 2 }} {...props}>
+    {children}
+  </MuiDivider>
+);
 
 export default Divider;

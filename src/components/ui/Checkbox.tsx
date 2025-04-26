@@ -1,4 +1,6 @@
 import React from 'react';
+import MuiCheckbox from '@mui/material/Checkbox';
+import FormControlLabel from '@mui/material/FormControlLabel';
 
 interface CheckboxProps {
   label: string;
@@ -8,17 +10,16 @@ interface CheckboxProps {
 
 const Checkbox: React.FC<CheckboxProps> = ({ label, checked, onChange }) => {
   return (
-    <div className="form-control">
-      <label className="label cursor-pointer">
-        <span className="label-text">{label}</span>
-        <input
-          type="checkbox"
+    <FormControlLabel
+      control={
+        <MuiCheckbox
           checked={checked}
-          className="checkbox-primary checkbox"
-          onChange={(e) => onChange(e.target.checked)}
+          onChange={(_, checked) => onChange(checked)}
+          color="primary"
         />
-      </label>
-    </div>
+      }
+      label={label}
+    />
   );
 };
 

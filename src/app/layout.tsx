@@ -2,11 +2,14 @@ import React from 'react';
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
-import PageWrapper from '../components/ui/PageWrapper';
+import PageWrapper from '../components/UI/PageWrapper';
+import StyledMain from '../components/UI/StyledMain';
 import PageHeader from '../components/PageHeader/PageHeader';
 import { AuthProvider } from '@/components/AuthProvider';
 import { authOptions } from './api/auth/[...nextauth]/route';
 import { getServerSession } from 'next-auth/next';
+import { CssBaseline } from '@mui/material';
+import StyledComponentsRegistry from '@/lib/registry/StyledComponentsRegistry';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -35,11 +38,14 @@ export default async function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        <CssBaseline />
         <AuthProvider session={session}>
-          <PageHeader />
-          <PageWrapper>
-            <main>{children}</main>
-          </PageWrapper>
+          <StyledComponentsRegistry>
+            <PageHeader />
+            <StyledMain>
+              <PageWrapper>{children}</PageWrapper>
+            </StyledMain>
+          </StyledComponentsRegistry>
         </AuthProvider>
       </body>
     </html>

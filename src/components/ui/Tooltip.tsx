@@ -1,25 +1,17 @@
 import React from 'react';
+import MuiTooltip from '@mui/material/Tooltip';
 
 interface TooltipProps {
   children: React.ReactNode;
-  direction?: 'top' | 'right' | 'bottom' | 'left';
-  text: string;
+  title: string;
+  placement?: 'top' | 'right' | 'bottom' | 'left';
 }
 
-const Tooltip: React.FC<TooltipProps> = ({ children, direction, text }) => {
-  const TOOLTIP_DIRECTION_CLASSES = {
-    top: 'tooltip-top',
-    right: 'tooltip-right',
-    bottom: 'tooltip-bottom',
-    left: 'tooltip-left'
-  };  
-  const directionClassName = direction ? TOOLTIP_DIRECTION_CLASSES[direction] : '';
-  const tooltipClassNames = `tooltip ${directionClassName}`;
-
+const Tooltip: React.FC<TooltipProps> = ({ children, title, placement = 'top' }) => {
   return (
-    <div className={tooltipClassNames} data-tip={text}>
-      {children}
-    </div>
+    <MuiTooltip title={title} placement={placement}>
+      <span>{children}</span>
+    </MuiTooltip>
   );
 };
 

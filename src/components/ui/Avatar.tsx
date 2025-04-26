@@ -1,19 +1,15 @@
 import React from 'react';
-import Image from 'next/image';
+import Avatar from '@mui/material/Avatar';
 
 interface AvatarProps {
   name?: string;
   src?: string;
 }
 
-const Avatar: React.FC<AvatarProps> = ({ name = '', src = '/globe.svg' }) => {
+const MyAvatar: React.FC<AvatarProps> = ({ name = '', src = '/globe.svg' }) => {
   return (
-    <div tabIndex={0} role="button" className="avatar cursor-pointer">
-      <div className="w-8 rounded-full">
-        <Image alt={name} src={src} height={8} width={8} />
-      </div>
-    </div>
+    <Avatar alt={name} src={src} sx={{ width: 56, height: 56 }} />
   );
 };
 
-export default Avatar;
+export default MyAvatar;
