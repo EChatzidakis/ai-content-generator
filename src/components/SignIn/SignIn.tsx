@@ -51,7 +51,6 @@ const SignInComponent: React.FC<SignInComponentProps> = ({
         id="email"
         label="Email"
         value={email}
-        fullWidth
         onChange={handleCredentialsEmailOnChange}
       />
       <Input
@@ -60,7 +59,6 @@ const SignInComponent: React.FC<SignInComponentProps> = ({
         value={password}
         onChange={handleCredentialsPasswordOnChange}
         type="password"
-        fullWidth
       />
       <Button onClick={() => signIn('credentials', { email, password })} fullWidth>
         Sign in
