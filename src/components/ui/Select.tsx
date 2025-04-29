@@ -1,34 +1,30 @@
 import React from 'react';
+import { Select as MUISelect, MenuItem, FormControl, InputLabel } from '@mui/material';
 
 interface SelectProps {
   options: string[];
   selected: string;
   onChange: (selected: string) => void;
+  label?: string;
 }
 
-const Select: React.FC<SelectProps> = ({ options, selected, onChange }) => {
-  const handleRenderOptions = () => {
-    return options.map((option) => {
-      return (
-        <option key={option} value={option}>
-          {option}
-        </option>
-      );
-    });
-  };
-
+const SelectComponent: React.FC<SelectProps> = ({ options, selected, onChange, label }) => {
   return (
-    <select
-      className="select select-bordered w-full max-w-xs"
-      value={selected}
-      onChange={(e) => onChange(e.target.value)}
-    >
-      <option disabled selected>
-        Click to select
-      </option>
-      {handleRenderOptions()}
-    </select>
+    <FormControl fullWidth variant="outlined" size="small">
+      {label && <InputLabel>{label}</InputLabel>}
+      <MUISelect
+        value={selected}
+        label={label}
+        onChange={(e) => onChange(e.target.value as string)}
+      >
+        {options.map((option) => (
+          <MenuItem key={option} value={option}>
+            {option}
+          </MenuItem>
+        ))}
+      </MUISelect>
+    </FormControl>
   );
 };
 
-export default Select;
+export const Select = SelectComponent;

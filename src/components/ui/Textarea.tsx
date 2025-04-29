@@ -1,38 +1,12 @@
 import React from 'react';
+import { TextFieldProps } from '@mui/material/TextField';
+import TextField from '@mui/material/TextField';
 
-interface TextareaProps {
-  disabled?: boolean;
-  placeholder: string;
-  value: string;
-  onChange: (value: string) => void;
-  onSubmit: (value: string) => void;
-}
-
-const Textarea: React.FC<TextareaProps> = ({
-  disabled = false,
-  placeholder = 'Ask away!',
-  value = '',
-  onChange = () => {},
-  onSubmit = () => {}
-}) => {
-  const onEnterPress = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault();
-      onSubmit(value);
-    }
-  };
+const TextareaComponent: React.FC<TextFieldProps> = (props) => {
 
   return (
-    <textarea
-      className="textarea textarea-bordered w-full"
-      placeholder={placeholder}
-      disabled={disabled}
-      value={value}
-      onChange={(e) => onChange(e.target.value)}
-      onKeyDown={onEnterPress}
-      rows={3}
-    />
+    <TextField {...props} />
   );
 };
 
-export default Textarea;
+export const Textarea = TextareaComponent;
