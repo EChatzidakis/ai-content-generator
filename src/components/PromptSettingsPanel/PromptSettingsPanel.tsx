@@ -22,7 +22,18 @@ const PromptSettingsPanelComponent: React.FC = () => {
       <Accordion title="Prompt Settings" defaultExpanded={false}>
         <PromptSettingsForm />
       </Accordion>
-      <Textarea id='main-prompt' multiline rows={4} placeholder='Your prompt...' />
+      <Textarea
+        id="main-prompt"
+        multiline
+        rows={4}
+        placeholder="Your prompt..."
+        sx={{
+          backgroundColor: '#ffffff',
+          '& .MuiInputBase-root': {
+            backgroundColor: '#ffffff'
+          }
+        }}
+      />
     </PanelWrapper>
   );
 };
