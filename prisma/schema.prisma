@@ -60,7 +60,7 @@ model Message {
 model ContentCategory {
   id          String        @id @default(uuid())
   name        String        @unique
-  description String?
+  description String
   types       ContentType[] // Relation: one category -> many types
 
   createdAt   DateTime      @default(now())
@@ -72,14 +72,14 @@ model ContentType {
   name              String         @unique
   description       String
   categoryId        String
-  defaultToneId     String?         
-  defaultFormatId   String?
-  defaultAudienceId String?
+  defaultToneStyleId     String         
+  defaultContentFormatId   String
+  defaultAudienceId String
 
   category          ContentCategory @relation(fields: [categoryId], references: [id])
-  defaultTone       ToneStyle?      @relation("ToneStyleForContentType", fields: [defaultToneId], references: [id])
-  defaultFormat     ContentFormat?  @relation("ContentFormatForContentType", fields: [defaultFormatId], references: [id])
-  defaultAudience   Audience?       @relation("AudienceForContentType", fields: [defaultAudienceId], references: [id])
+  defaultTone       ToneStyle      @relation("ToneStyleForContentType", fields: [defaultToneStyleId], references: [id])
+  defaultFormat     ContentFormat  @relation("ContentFormatForContentType", fields: [defaultContentFormatId], references: [id])
+  defaultAudience   Audience       @relation("AudienceForContentType", fields: [defaultAudienceId], references: [id])
 
   createdAt         DateTime         @default(now())
   updatedAt         DateTime         @updatedAt
@@ -88,6 +88,7 @@ model ContentType {
 model ToneStyle {
   id          String         @id @default(uuid())
   name        String         @unique
+  description String
   types       ContentType[]  @relation("ToneStyleForContentType")
 
   createdAt   DateTime        @default(now())
@@ -97,6 +98,7 @@ model ToneStyle {
 model ContentFormat {
   id          String         @id @default(uuid())
   name        String         @unique
+  description String
   types       ContentType[]  @relation("ContentFormatForContentType")
 
   createdAt   DateTime        @default(now())
@@ -106,6 +108,7 @@ model ContentFormat {
 model Audience {
   id          String         @id @default(uuid())
   name        String         @unique
+  description String
   types       ContentType[]  @relation("AudienceForContentType")
 
   createdAt   DateTime        @default(now())
