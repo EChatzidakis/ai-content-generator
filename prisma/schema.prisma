@@ -79,10 +79,6 @@ model ContentType {
 
   category                ContentCategory @relation(fields: [categoryId], references: [id])
 
-  defaultTone             ToneStyle      @relation("DefaultToneStyle", fields: [defaultToneStyleId], references: [id])
-  defaultFormat           ContentFormat  @relation("DefaultContentFormat", fields: [defaultContentFormatId], references: [id])
-  defaultAudience         Audience       @relation("DefaultAudience", fields: [defaultAudienceId], references: [id])
-
   tones                   ToneStyle[]    @relation("ManyToManyToneStyles")
   formats                 ContentFormat[] @relation("ManyToManyContentFormats")
   audiences               Audience[]     @relation("ManyToManyAudiences")
