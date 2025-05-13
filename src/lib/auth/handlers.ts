@@ -12,17 +12,33 @@ export const handleCredentialsSignIn = async (userId: string) => {
   return true;
 };
 
+
 export const handleOAuthSignIn = async (user: NextAuthUser, account?: Account | null) => {
   const providerUserId = user.id;
-  const existingUser = await getUserByProviderUserId(providerUserId);
+  if (!providerUserId) {
+    throw new ApiError('Missing provider user ID', 400);
+  }
 
-  if (!existingUser && account) {
-    try {
-      await createUserFromProvider(user, account);
-    } catch (error) {
-      console.error('Error creating user from provider:', error);
-      throw new ApiError('Failed to create user from provider', 500);
-    }
+  const existingUser = await getUserByProviderUserId(providerUserId);
+  if (existingUser) {
+    return true;
+  }
+
+  if (!account) {
+    throw new ApiError('Account info is missing', 500);
+  }
+
+  try {
+    const name = user.name || `${account.provider}_user`;
+    const email = user.email;
+    const image_url = user.image || undefined;
+    const provider = account.provider;
+    const provider_user_id = providerUserId.toString();
+
+    await createUserFromProvider({ name, email, image_url, provider, provider_user_id });
+  } catch (error) {
+    console.error('Error inserting OAuth user:', error);
+    throw new ApiError('Failed to create user from provider', 500);
   }
 
   return true;
