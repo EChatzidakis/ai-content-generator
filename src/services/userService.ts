@@ -1,72 +1,28 @@
 import prisma from '@/lib/prisma';
-import { User as NextAuthUser, Account } from 'next-auth';
-import bcrypt from 'bcrypt';
+import { Prisma } from '@prisma/client';
 
-// this is the user model
-// model User {
-//   id          String    @id @default(uuid())
-//   name        String
-//   email       String?    @unique
-//   password_hash String?
-//   password_salt String?
-//   image_url   String?
-//   provider    String?
-//   provider_user_id String?
-//   createdAt   DateTime  @default(now())
-//   conversations Conversation[]
-// }
-
-export const createUserFromProvider = async (user: NextAuthUser, account: Account) => {
-  const userProviderId = user.id || account?.providerAccountId;
-  if (!userProviderId) {
-    console.error('No user ID found');
-    return false;
-  }
-
-  const existingUser = await getUserByProviderUserId(
-    userProviderId?.toString()
-  );
-  if (existingUser) {
-    console.log('User exists. \nExiting...');
-    return existingUser;
-  }
-
-  const image_url = user.image;
-  const provider = account.provider;
-  const provider_user_id = userProviderId.toString();
-  const name = user.name || `${provider}_user`;
-  const email = user.email;
-
-  const newUser = await prisma.user.create({
-    data: { name, image_url, email, provider, provider_user_id }
+export const createUserFromProvider = async ({
+  name,
+  email,
+  image_url,
+  provider,
+  provider_user_id
+}: {
+  name: string;
+  email?: string;
+  image_url?: string;
+  provider: string;
+  provider_user_id: string;
+}) => {
+  return prisma.user.create({
+    data: { name, email, image_url, provider, provider_user_id }
   });
-
-  return newUser;
 };
 
-export const createUserWithCredentials = async (name: string, email: string, password: string) => {
-  if (!name || !email || !password) {
-    throw new Error('All fields are required');
-  }
-
-  const existingUser = await getUserByEmail(email);
-  if (existingUser) {
-    throw new Error('User already exists with this email');
-  }
-
-  const salt = await bcrypt.genSalt(10);
-  const hashedPassword = await bcrypt.hash(password, salt); 
-
-  const newUser = await prisma.user.create({
-    data: {
-      name,
-      email,
-      password_hash: hashedPassword,
-      password_salt: salt
-    }
+export const createUserWithCredentials = async (data: Prisma.UserCreateInput) => {
+  return prisma.user.create({
+    data
   });
-
-  return newUser;
 };
 
 export const getUserByEmail = async (email: string) => {
@@ -97,5 +53,18 @@ export const getUserByProviderUserId = async (providerUserId: string) => {
   }
   return prisma.user.findFirst({
     where: { provider_user_id: providerUserId }
+  });
+};
+
+export const deleteUserById = async (id: string) => {
+  return prisma.user.delete({
+    where: { id }
+  });
+};
+
+export const updateUserById = async (id: string, data: Partial<Parameters<typeof prisma.user.update>[0]['data']>) => {
+  return prisma.user.update({
+    where: { id },
+    data
   });
 };
