@@ -6,7 +6,7 @@ import PageWrapper from '../components/UI/PageWrapper';
 import StyledMain from '../components/UI/StyledMain';
 import PageHeader from '../components/PageHeader/PageHeader';
 import { AuthProvider } from '@/components/AuthProvider';
-import { authOptions } from './api/auth/[...nextauth]/route';
+import { authOptions } from '@/lib/auth/options';
 import { getServerSession } from 'next-auth/next';
 import { CssBaseline } from '@mui/material';
 import StyledComponentsRegistry from '@/lib/registry/StyledComponentsRegistry';
