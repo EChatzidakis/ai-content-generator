@@ -30,7 +30,7 @@ export const handleOAuthSignIn = async (user: NextAuthUser, account?: Account | 
 
   try {
     const name = user.name || `${account.provider}_user`;
-    const email = user.email;
+    const email = user.email ?? undefined;
     const image_url = user.image || undefined;
     const provider = account.provider;
     const provider_user_id = providerUserId.toString();
