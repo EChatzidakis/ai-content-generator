@@ -1,10 +1,11 @@
-
 import GithubProvider from 'next-auth/providers/github';
 import CredentialsProvider from 'next-auth/providers/credentials';
-import bcrypt from 'bcrypt';
 import type { AuthOptions } from 'next-auth';
-import { getUserByEmail } from '@/services/userService';
-import { handleCredentialsSignIn, handleOAuthSignIn } from '@/lib/auth/handlers';
+import {
+  handleCredentialsSignIn,
+  handleOAuthSignIn,
+  validateCredentialsLogin
+} from '@/lib/auth/handlers';
 import { ApiError } from '../ApiError';
 
 // For more information on options, go to:
@@ -19,31 +20,29 @@ export const authOptions: AuthOptions = {
     CredentialsProvider({
       name: 'Credentials',
       credentials: {
-        email: { label: 'Email', type: 'text', placeholder: 'example@example.com' },
+        email: {
+          label: 'Email',
+          type: 'text',
+          placeholder: 'example@example.com'
+        },
         password: { label: 'Password', type: 'password' }
       },
       async authorize(credentials) {
-        if (!credentials?.email || !credentials?.password) {
-          throw new Error('Email and password are required');
-        }
-  
-        const user = await getUserByEmail(credentials.email);
-        if (!user) {
-          throw new Error('No user found with this email');
-        }
+        try {
+          const user = await validateCredentialsLogin(
+            credentials?.email || '',
+            credentials?.password || ''
+          );
+          return user;
+        } catch (error) {
+          if (error instanceof ApiError) {
+            console.error(`[AUTH ERROR] ${error.statusCode}: ${error.message}`);
+            throw new Error(error.message); // Let NextAuth handle display — avoid leaking statusCode
+          }
 
-        if (!user.password_hash) {
-          throw new Error('User has no password set');
+          console.error('[UNEXPECTED AUTH ERROR]', error);
+          throw new Error('An unexpected error occurred during login');
         }
-        
-        const isMatch = await bcrypt.compare(credentials.password, user.password_hash);
-        if (!isMatch) {
-          throw new Error('Invalid password');
-        }
-
-        const { id, name, email, image_url } = user;
-
-        return { id, name, email, image_url };
       }
     })
   ],
