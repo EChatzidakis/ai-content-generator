@@ -6,7 +6,6 @@
 
 generator client {
   provider = "prisma-client-js"
-  output   = "generated/prisma/client"
 }
 
 datasource db {
@@ -79,9 +78,9 @@ model ContentType {
 
   category                ContentCategory @relation(fields: [categoryId], references: [id])
 
-  tones                   ToneStyle[]    @relation("ManyToManyToneStyles")
-  formats                 ContentFormat[] @relation("ManyToManyContentFormats")
-  audiences               Audience[]     @relation("ManyToManyAudiences")
+  tones                   ToneStyle[]    @relation("ManyToManyToneStyles") // Many-to-many relation with ToneStyle
+  formats                 ContentFormat[] @relation("ManyToManyContentFormats") // Many-to-many relation with ContentFormat
+  audiences               Audience[]     @relation("ManyToManyAudiences") // Many-to-many relation with Audience
 
   createdAt               DateTime         @default(now())
   updatedAt               DateTime         @updatedAt

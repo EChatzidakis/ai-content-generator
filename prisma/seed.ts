@@ -1,5 +1,5 @@
 // prisma/seed.ts
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient, Prisma } from '@prisma/client';
 import { audiences } from './seeds/audiences.ts';
 import { contentFormats } from './seeds/contentFormats.ts';
 import { contentTypes } from './seeds/contentTypes.ts';
@@ -48,12 +48,86 @@ async function upsertContentCategories() {
   }
 }
 
+// async function upsertContentTypes() {
+//   for (const type of contentTypes) {
+//     await prisma.contentType.upsert({
+//       where: { id: type.id },
+//       update: {
+//         formats: {
+//           set: [], // Clear previous relations if necessary
+//           connect: type.formatsIds.map((id) => ({ id }))
+//         },
+//         tones: {
+//           set: [],
+//           connect: type.toneIds.map((id) => ({ id }))
+//         },
+//         audiences: {
+//           set: [],
+//           connect: type.audiencesIds.map((id) => ({ id }))
+//         }
+//       },
+//       create: {
+//         id: type.id,
+//         name: type.name,
+//         description: type.description,
+//         categoryId: type.categoryId,
+//         defaultToneStyleId: type.defaultToneStyleId,
+//         defaultContentFormatId: type.defaultContentFormatId,
+//         defaultAudienceId: type.defaultAudienceId,
+//         formats: {
+//           connect: type.formatsIds.map((id) => ({ id }))
+//         },
+//         tones: {
+//           connect: type.toneIds.map((id) => ({ id }))
+//         },
+//         audiences: {
+//           connect: type.audiencesIds.map((id) => ({ id }))
+//         }
+//       }
+//     });
+//   }
+// }
+
 async function upsertContentTypes() {
   for (const type of contentTypes) {
+    const createData: Prisma.ContentTypeCreateInput = {
+      id: type.id,
+      name: type.name,
+      description: type.description,
+      defaultAudienceId: type.defaultAudienceId,
+      defaultContentFormatId: type.defaultContentFormatId,
+      defaultToneStyleId: type.defaultToneStyleId,
+      category: { connect: { id: type.categoryId } },
+      formats: {
+        connect: type.formatsIds.map((id) => ({ id })),
+      },
+      tones: {
+        connect: type.toneIds.map((id) => ({ id })),
+      },
+      audiences: {
+        connect: type.audiencesIds.map((id) => ({ id })),
+      },
+    };
+
+    const updateData: Prisma.ContentTypeUpdateInput = {
+      formats: {
+        set: [],
+        connect: type.formatsIds.map((id) => ({ id })),
+      },
+      tones: {
+        set: [],
+        connect: type.toneIds.map((id) => ({ id })),
+      },
+      audiences: {
+        set: [],
+        connect: type.audiencesIds.map((id) => ({ id })),
+      },
+    };
+
     await prisma.contentType.upsert({
       where: { id: type.id },
-      update: {},
-      create: type
+      update: updateData,
+      create: createData,
     });
   }
 }

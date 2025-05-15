@@ -7,9 +7,9 @@ export const getAllContentTypes = async () => {
   return await prisma.contentType.findMany({
     include: {
       category: true,
-      defaultTone: true,
-      defaultFormat: true,
-      defaultAudience: true,
+      tones: true,
+      formats: true,
+      audiences: true,
     },
   });
 };
@@ -20,9 +20,9 @@ export const getContentTypeById = async (id: string) => {
     where: { id },
     include: {
       category: true,
-      defaultTone: true,
-      defaultFormat: true,
-      defaultAudience: true,
+      tones: true,
+      formats: true,
+      audiences: true,
     },
   });
 };
