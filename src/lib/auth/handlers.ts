@@ -1,6 +1,6 @@
 // handlers.ts
 import { ApiError } from '../ApiError';
-import { getUserById, getUserByProviderUserId, createUserFromProvider, getUserByEmail } from '@/services/userService';
+import { getUserById, getUserByProviderUserId, createUserFromProvider, getUserByEmail } from '@/services/db/userService';
 import type { User as NextAuthUser, Account } from 'next-auth';
 import bcrypt from 'bcrypt';
 
@@ -30,7 +30,7 @@ export const handleOAuthSignIn = async (user: NextAuthUser, account?: Account | 
 
   try {
     const name = user.name || `${account.provider}_user`;
-    const email = user.email;
+    const email = user.email ?? undefined;
     const image_url = user.image || undefined;
     const provider = account.provider;
     const provider_user_id = providerUserId.toString();

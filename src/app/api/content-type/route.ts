@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getAllContentTypes, createContentType } from "@/services/contentTypeService";
+import { getAllContentTypes, createContentType } from "@/services/db/contentTypeService";
 
 // GET /api/content-types
 export async function GET() {

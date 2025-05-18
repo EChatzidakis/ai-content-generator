@@ -4,7 +4,7 @@ import {
   getContentCategoryById,
   updateContentCategory,
   deleteContentCategory
-} from '@/services/contentCategoryService';
+} from '@/services/db/contentCategoryService';
 
 export async function GET(
   _req: NextRequest,

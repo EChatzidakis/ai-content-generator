@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server';
 import {
   createContentCategory,
   getAllContentCategories
-} from '@/services/contentCategoryService';
+} from '@/services/db/contentCategoryService';
 
 export async function GET() {
   try {

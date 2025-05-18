@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import {
   createAudience,
   getAllAudiences,
-} from "@/services/audienceService";
+} from "@/services/db/audienceService";
 
 export async function GET() {
   try {

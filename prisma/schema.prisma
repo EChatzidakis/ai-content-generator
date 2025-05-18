@@ -6,7 +6,6 @@
 
 generator client {
   provider = "prisma-client-js"
-  output   = "generated/prisma/client"
 }
 
 datasource db {
@@ -69,28 +68,30 @@ model ContentCategory {
 }
 
 model ContentType {
-  id                String         @id @default(uuid())
-  name              String         @unique
-  description       String
-  categoryId        String
-  defaultToneStyleId     String         
-  defaultContentFormatId   String
-  defaultAudienceId String
+  id                      String         @id @default(uuid())
+  name                    String         @unique
+  description             String
+  categoryId              String
+  defaultToneStyleId      String         
+  defaultContentFormatId  String
+  defaultAudienceId       String
 
-  category          ContentCategory @relation(fields: [categoryId], references: [id])
-  defaultTone       ToneStyle      @relation("ToneStyleForContentType", fields: [defaultToneStyleId], references: [id])
-  defaultFormat     ContentFormat  @relation("ContentFormatForContentType", fields: [defaultContentFormatId], references: [id])
-  defaultAudience   Audience       @relation("AudienceForContentType", fields: [defaultAudienceId], references: [id])
+  category                ContentCategory @relation(fields: [categoryId], references: [id])
 
-  createdAt         DateTime         @default(now())
-  updatedAt         DateTime         @updatedAt
+  tones                   ToneStyle[]    @relation("ManyToManyToneStyles") // Many-to-many relation with ToneStyle
+  formats                 ContentFormat[] @relation("ManyToManyContentFormats") // Many-to-many relation with ContentFormat
+  audiences               Audience[]     @relation("ManyToManyAudiences") // Many-to-many relation with Audience
+
+  createdAt               DateTime         @default(now())
+  updatedAt               DateTime         @updatedAt
 }
 
 model ToneStyle {
   id          String         @id @default(uuid())
   name        String         @unique
   description String
-  types       ContentType[]  @relation("ToneStyleForContentType")
+
+  types       ContentType[]  @relation("ManyToManyToneStyles")
 
   createdAt   DateTime        @default(now())
   updatedAt   DateTime        @updatedAt
@@ -100,7 +101,8 @@ model ContentFormat {
   id          String         @id @default(uuid())
   name        String         @unique
   description String
-  types       ContentType[]  @relation("ContentFormatForContentType")
+
+  types       ContentType[]  @relation("ManyToManyContentFormats")
 
   createdAt   DateTime        @default(now())
   updatedAt   DateTime        @updatedAt
@@ -110,7 +112,8 @@ model Audience {
   id          String         @id @default(uuid())
   name        String         @unique
   description String
-  types       ContentType[]  @relation("AudienceForContentType")
+
+  types       ContentType[]  @relation("ManyToManyAudiences")
 
   createdAt   DateTime        @default(now())
   updatedAt   DateTime        @updatedAt

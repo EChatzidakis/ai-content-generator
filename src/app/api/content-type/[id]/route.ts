@@ -3,7 +3,7 @@ import {
   getContentTypeById,
   updateContentType,
   deleteContentType,
-} from "@/services/contentTypeService";
+} from "@/services/db/contentTypeService";
 
 // GET /api/content-types/:id
 export async function GET(_: Request, { params }: { params: { id: string } }) {

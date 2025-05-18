@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { toneStyleService } from "@/services/toneStyleService";
+import { toneStyleService } from "@/services/db/toneStyleService";
 
 export async function GET() {
   try {
