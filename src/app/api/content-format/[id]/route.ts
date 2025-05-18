@@ -4,7 +4,7 @@ import {
   getContentFormatById,
   updateContentFormat,
   deleteContentFormat,
-} from '@/services/contentFormatService';
+} from '@/services/db/contentFormatService';
 
 export async function GET(
   _req: NextRequest,

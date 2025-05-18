@@ -1,6 +1,6 @@
 // handlers.ts
 import { ApiError } from '../ApiError';
-import { getUserById, getUserByProviderUserId, createUserFromProvider, getUserByEmail } from '@/services/userService';
+import { getUserById, getUserByProviderUserId, createUserFromProvider, getUserByEmail } from '@/services/db/userService';
 import type { User as NextAuthUser, Account } from 'next-auth';
 import bcrypt from 'bcrypt';
 

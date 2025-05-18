@@ -6,7 +6,7 @@ import {
   getUserByEmail,
   updateUserById,
   deleteUserById
-} from '@/services/userService';
+} from '@/services/db/userService';
 import { ApiError } from '@/lib/ApiError';
 
 export async function POST(req: Request) {

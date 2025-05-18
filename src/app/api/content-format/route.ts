@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server';
 import {
   createContentFormat,
   getAllContentFormats,
-} from '@/services/contentFormatService';
+} from '@/services/db/contentFormatService';
 
 export async function GET() {
   try {
