@@ -10,7 +10,7 @@ interface SelectProps {
 
 const SelectComponent: React.FC<SelectProps> = ({ options, selected, onChange, label }) => {
   return (
-    <FormControl fullWidth variant="outlined" size="small">
+    <FormControl fullWidth variant="outlined" size="small" sx={{ pb: 2 }}>
       {label && <InputLabel>{label}</InputLabel>}
       <MUISelect
         value={selected}

@@ -12,6 +12,9 @@ export type ContentTypeSeed = {
   defaultToneStyleId: string;
   defaultContentFormatId: string;
   defaultAudienceId: string;
+  formatsIds: string[];
+  toneIds: string[];
+  audiencesIds: string[];
 };
 
 export type ToneStyleSeed = {

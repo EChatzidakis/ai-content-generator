@@ -11,7 +11,12 @@ const StyledPageWrapper = styled.div`
   height: 100%;
   align-items: center;
   justify-content: center;
-  `;
+  flex-direction: row;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
+`;
 
 const PageWrapper: React.FC<PageWrapperProps> = ({ children }) => {
   return (

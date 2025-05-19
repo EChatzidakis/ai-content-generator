@@ -12,7 +12,7 @@
     "seed": "prisma db seed"
   },
   "prisma": {
-    "seed": "node --loader ts-node/esm prisma/seed.ts"
+    "seed": "tsx prisma/seed.ts"
   },
   "dependencies": {
     "@auth/core": "^0.34.2",
@@ -46,6 +46,7 @@
     "prettier": "^3.4.2",
     "prisma": "^6.7.0",
     "ts-node": "^10.9.2",
+    "tsx": "^4.19.4",
     "typescript": "^5"
   }
 }

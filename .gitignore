@@ -39,3 +39,8 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# prisma generated files
+# ignore the /prisma/generated directory
+# this is where the Prisma client is generated from the `postinstall` script
+/prisma/generated

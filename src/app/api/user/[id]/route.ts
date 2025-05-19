@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getUserById } from "@/services/userService";
+import { getUserById } from "@/services/db/userService";
 
 export async function GET(req: Request, { params }: { params: { id: string } }) {
   try {

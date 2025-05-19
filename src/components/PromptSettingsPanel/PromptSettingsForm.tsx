@@ -4,11 +4,16 @@ import { Form, Select } from '../UI';
 const PromptSettingsFormComponent: React.FC = () => {
   return (
     <Form>
-      {/* Add form fields here */}
       <Select
-        label="Type"
+        label="Category"
         options={['Option 1', 'Option 2']}
         selected={'Option 1'}
+        onChange={(value) => console.log(value)}
+      />
+      <Select
+        label='Type'
+        options={['Option 1', 'Option 2']}
+        selected='Option 1'
         onChange={(value) => console.log(value)}
       />
       <Select
@@ -18,7 +23,13 @@ const PromptSettingsFormComponent: React.FC = () => {
         onChange={(value) => console.log(value)}
       />
       <Select
-        label='Creativity'
+        label='Format'
+        options={['Option 1', 'Option 2']}
+        selected='Option 1'
+        onChange={(value) => console.log(value)}
+      />
+      <Select
+        label='Audience'
         options={['Option 1', 'Option 2']}
         selected='Option 1'
         onChange={(value) => console.log(value)}
