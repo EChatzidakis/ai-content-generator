@@ -1,8 +1,15 @@
 'use client';
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { Accordion, Textarea } from '@/components/UI';
 import { PromptSettingsForm } from './PromptSettingsForm';
+import {
+  useAudienceStore,
+  useCategoryStore,
+  useFormatStore,
+  useToneStore,
+  useTypeStore
+} from '@/store';
 
 const PanelWrapper = styled.div`
   display: flex;
@@ -14,6 +21,24 @@ const PanelWrapper = styled.div`
 `;
 
 const PromptSettingsPanelComponent: React.FC = () => {
+  const { fetchCategories } = useCategoryStore();
+  const { fetchAudiences } = useAudienceStore();
+  const { fetchTones } = useToneStore();
+  const { fetchTypes } = useTypeStore();
+  const { fetchFormats } = useFormatStore();
+
+  useEffect(() => {
+    handleFetchPromptSettings();
+  }, []);
+
+  const handleFetchPromptSettings = () => {
+    fetchCategories();
+    fetchAudiences();
+    fetchTones();
+    fetchFormats();
+    fetchTypes();
+  };
+
   return (
     <PanelWrapper>
       <h2>Prompt Settings</h2>
