@@ -3,7 +3,7 @@ export interface ContentCategory {
     id: string;
     name: string;
     description: string;
-    types: object[];
+    types: ContentType[];
     createdAt: string;
     updatedAt: string;
 }
