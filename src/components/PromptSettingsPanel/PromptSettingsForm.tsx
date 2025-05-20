@@ -89,7 +89,7 @@ const PromptSettingsFormComponent: React.FC = () => {
 
     setSelectedAudience(_selectedType.defaultAudienceId);
     setSelectedFormat(_selectedType.defaultContentFormatId);
-    setSelectedTone(_selectedType.defaultToneStyleId);
+    setSelectedTone(_selectedType.defaultContentToneId);
   };
 
   const handleSetAudienceOptions = (availableAudiences: ContentAudience[]) => {

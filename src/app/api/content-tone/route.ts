@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
-import { toneStyleService } from "@/services/db/toneStyleService";
+import { contentToneService } from "@/services/db/contentToneService";
 
 export async function GET() {
   try {
-    const toneStyles = await toneStyleService.getAll();
-    return NextResponse.json(toneStyles);
+    const contentTones = await contentToneService.getAll();
+    return NextResponse.json(contentTones);
   } catch (error) {
     console.error("GET /api/tone-styles error:", error);
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
@@ -14,8 +14,8 @@ export async function GET() {
 export async function POST(req: NextRequest) {
   try {
     const { name, description } = await req.json();
-    const newToneStyle = await toneStyleService.create({ name, description });
-    return NextResponse.json(newToneStyle, { status: 201 });
+    const newContentTone = await contentToneService.create({ name, description });
+    return NextResponse.json(newContentTone, { status: 201 });
   } catch (error) {
     console.error("POST /api/tone-styles error:", error);
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });

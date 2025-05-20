@@ -72,13 +72,13 @@ model ContentType {
   name                    String         @unique
   description             String
   categoryId              String
-  defaultToneStyleId      String         
+  defaultContentToneId      String         
   defaultContentFormatId  String
   defaultAudienceId       String
 
   category                ContentCategory @relation(fields: [categoryId], references: [id])
 
-  tones                   ToneStyle[]    @relation("ManyToManyToneStyles") // Many-to-many relation with ToneStyle
+  tones                   ContentTone[]    @relation("ManyToManyContentTones") // Many-to-many relation with ContentTone
   formats                 ContentFormat[] @relation("ManyToManyContentFormats") // Many-to-many relation with ContentFormat
   audiences               Audience[]     @relation("ManyToManyAudiences") // Many-to-many relation with Audience
 
@@ -86,12 +86,12 @@ model ContentType {
   updatedAt               DateTime         @updatedAt
 }
 
-model ToneStyle {
+model ContentTone {
   id          String         @id @default(uuid())
   name        String         @unique
   description String
 
-  types       ContentType[]  @relation("ManyToManyToneStyles")
+  types       ContentType[]  @relation("ManyToManyContentTones")
 
   createdAt   DateTime        @default(now())
   updatedAt   DateTime        @updatedAt
