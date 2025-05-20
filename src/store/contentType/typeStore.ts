@@ -1,16 +1,16 @@
 import { create } from 'zustand';
 import { onGetAllTypes } from '@/services/api/contentType/contentTypeApiCalls';
-import { ContentTone } from '@/types/content';
+import { ContentType } from '@/types/content';
 
 type State = {
-  types: ContentTone[];
+  types: ContentType[];
   loading: boolean;
   error: boolean;
   fetchTypes: () => Promise<void>;
   clearTypes: () => void;
 };
 
-export const useAudienceStore = create<State>((set) => ({
+export const useTypeStore = create<State>((set) => ({
   types: [],
   loading: false,
   error: false,
