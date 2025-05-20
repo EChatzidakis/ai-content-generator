@@ -1,9 +1,9 @@
 const apiUrls = {
-  categories: '/api/content-categories',
-  types: '/api/content-types',
-  audiences: '/api/content-audiences',
-  formats: '/api/content-formats',
-  tones: '/api/content-tones'
+  categories: '/api/content-category',
+  types: '/api/content-type',
+  audiences: '/api/content-audience',
+  formats: '/api/content-format',
+  tones: '/api/content-tone'
 }; 
 
 export default apiUrls;
