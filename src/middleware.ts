@@ -1,23 +1,6 @@
 import { NextResponse } from "next/server";
-// import type { NextRequest } from "next/server";
 import { withAuth } from "next-auth/middleware";
 
-// export default withAuth(
-//   function middleware(req: NextRequest) {
-//     console.log("Middleware");
-//     console.log(req.url);
-//     // Redirect unauthenticated users to /signin
-//     if (!req.cookies) {
-//       return NextResponse.redirect("/signin");
-//     }
-//     return NextResponse.next();
-//   },
-//   {
-//     pages: {
-//       signIn: "/signin",
-//     },
-//   }
-// );
 export const middleware =  withAuth(
   function middleware(req) {
     if (!req.nextauth.token) {

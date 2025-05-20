@@ -19,8 +19,8 @@ export const AuthProvider = ({
   useEffect(() => {
     if (session) {
       const _user: User = session.user as User;
-      _user.session_expiration = session.expires as string;
-      console.log('_user:', _user);
+      // TODO: Think if I actually need to include the session expiration in the user object
+      // _user.session_expiration = session.expires as string;
       setUser(_user);
     } else {
       setUser(null);
