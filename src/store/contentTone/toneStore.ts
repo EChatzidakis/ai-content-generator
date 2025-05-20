@@ -10,7 +10,7 @@ type State = {
   clearTones: () => void;
 };
 
-export const useAudienceStore = create<State>((set) => ({
+export const useToneStore = create<State>((set) => ({
   tones: [],
   loading: false,
   error: false,

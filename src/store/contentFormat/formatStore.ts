@@ -10,7 +10,7 @@ type State = {
   clearFormats: () => void;
 };
 
-export const useAudienceStore = create<State>((set) => ({
+export const useFormatStore = create<State>((set) => ({
   formats: [],
   loading: false,
   error: false,
