@@ -2,27 +2,27 @@ import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
-export const toneStyleService = {
+export const contentToneService = {
   async getAll() {
-    return prisma.toneStyle.findMany();
+    return prisma.contentTone.findMany();
   },
 
   async getById(id: string) {
-    return prisma.toneStyle.findUnique({ where: { id } });
+    return prisma.contentTone.findUnique({ where: { id } });
   },
 
   async create(data: { name: string; description: string }) {
-    return prisma.toneStyle.create({ data });
+    return prisma.contentTone.create({ data });
   },
 
   async update(id: string, data: { name?: string; description?: string }) {
-    return prisma.toneStyle.update({
+    return prisma.contentTone.update({
       where: { id },
       data,
     });
   },
 
   async delete(id: string) {
-    return prisma.toneStyle.delete({ where: { id } });
+    return prisma.contentTone.delete({ where: { id } });
   },
 };

@@ -13,7 +13,7 @@ export interface ContentType {
   name: string;
   description: string;
   categoryId: string;
-  defaultToneStyleId: string;
+  defaultContentToneId: string;
   defaultContentFormatId: string;
   defaultAudienceId: string;
 
