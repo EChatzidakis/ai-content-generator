@@ -4,11 +4,19 @@ import {
   createContentCategory,
   getAllContentCategories
 } from '@/services/db/contentCategoryService';
+import { ContentCategory } from '@/types/content';
 
 export async function GET() {
   try {
     const categories = await getAllContentCategories();
-    return NextResponse.json(categories);
+
+    const contentCategoryDTO: ContentCategory[] = categories.map((category) => ({
+      id: category.id,
+      name: category.name,
+      description: category.description,
+      types: category.types ?? []
+    }));
+    return NextResponse.json(contentCategoryDTO);
   } catch (error) {
     console.error('Error fetching content categories:', error);
     return NextResponse.json(

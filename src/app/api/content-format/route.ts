@@ -4,11 +4,18 @@ import {
   createContentFormat,
   getAllContentFormats,
 } from '@/services/db/contentFormatService';
+import { ContentFormat } from '@/types/content';
 
 export async function GET() {
   try {
     const formats = await getAllContentFormats();
-    return NextResponse.json(formats);
+    
+    const contentFormatDTO: ContentFormat[] = formats.map((format) => {
+      const { id, name, description } = format;
+      return { id, name, description };
+    });
+
+    return NextResponse.json(contentFormatDTO);
   } catch (error) {
     console.error('Error fetching content formats:', error);
     return NextResponse.json(
