@@ -1,10 +1,17 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { contentToneService } from '@/services/db/contentToneService';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/lib/auth/options';
+import { getAllContentTones, createContentTone } from '@/services/db/contentToneService';
 import { ContentTone } from '@/types/content';
 
 export async function GET() {
   try {
-    const contentTones = await contentToneService.getAll();
+    const session = await getServerSession(authOptions);
+    if (!session) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
+    const contentTones = await getAllContentTones();
     
     const contentTOnesDTO: ContentTone[] = contentTones.map((tone) => {
       const { id, name, description } = tone;
@@ -24,7 +31,7 @@ export async function GET() {
 export async function POST(req: NextRequest) {
   try {
     const { name, description } = await req.json();
-    const newContentTone = await contentToneService.create({
+    const newContentTone = await createContentTone({
       name,
       description
     });
