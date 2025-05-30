@@ -1,22 +1,22 @@
 import { prisma } from "@/lib/prisma";
 import { Audience } from "@prisma/client";
 
-export const getAllAudiences = async (): Promise<Audience[]> => {
+export const getAllContentAudiences = async (): Promise<Audience[]> => {
   return prisma.audience.findMany();
 };
 
-export const getAudienceById = async (id: string): Promise<Audience | null> => {
+export const getContentAudienceById = async (id: string): Promise<Audience | null> => {
   return prisma.audience.findUnique({ where: { id } });
 };
 
-export const createAudience = async (data: {
+export const createContentAudience = async (data: {
   name: string;
   description: string;
 }): Promise<Audience> => {
   return prisma.audience.create({ data });
 };
 
-export const updateAudience = async (
+export const updateContentAudience = async (
   id: string,
   data: { name?: string; description?: string }
 ): Promise<Audience> => {
@@ -26,6 +26,6 @@ export const updateAudience = async (
   });
 };
 
-export const deleteAudience = async (id: string): Promise<Audience> => {
+export const deleteContentAudience = async (id: string): Promise<Audience> => {
   return prisma.audience.delete({ where: { id } });
 };

@@ -19,8 +19,7 @@ export const getContentCategoryById = async (
   id: string
 ) => {
   return await prisma.contentCategory.findUnique({
-    where: { id },
-    include: { types: true },
+    where: { id }
   });
 };
 
