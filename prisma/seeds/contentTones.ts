@@ -1,4 +1,4 @@
-import { ContentToneSeed } from "../types/types";
+import { ContentToneSeed } from "../types/seeds";
 
 export const contentTones: ContentToneSeed[] = [
   {

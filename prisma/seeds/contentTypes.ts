@@ -1,4 +1,4 @@
-import { ContentTypeSeed } from '../types/types';
+import { ContentTypeSeed } from '../types/seeds';
 
 export const contentTypes: ContentTypeSeed[] = [
   {

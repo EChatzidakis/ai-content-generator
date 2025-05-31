@@ -1,4 +1,4 @@
-import { AudienceSeed } from '../types/types';
+import { AudienceSeed } from '../types/seeds';
 
 export const audiences: AudienceSeed[] = [
   {
