@@ -8,6 +8,7 @@ export type ContentTypeSeed = {
   id: string;
   name: string;
   description: string;
+  temperature: number;
   categoryId: string;
   defaultContentToneId: string;
   defaultContentFormatId: string;
