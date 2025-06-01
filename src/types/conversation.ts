@@ -1,3 +1,27 @@
+export type Conversation = {
+  id: string;
+  title: string;
+  messages: Message[];
+  userId: string;
+  promptSettings: PromptSettingsDTO;
+  created_at: string;
+  updated_at: string;
+}
+
+export type Message = {
+  id: string;
+  conversationId: string;
+  role: 'system' | 'user' | 'assistant';
+  content: string;
+  timestamp: string;
+}
+
+export type PromptEval = {
+  ethical: boolean;
+  relevant: boolean;
+  reason: string;
+}
+
 export type PromptSettings = {
   category: { name: string; description: string };
   type: { name: string; description: string };
