@@ -1,7 +1,11 @@
 import prisma from '@/lib/prisma';
 // import { Prisma } from '@prisma/client';
 
-export const createConversation = async ({ title, promptSettings, userId }: {
+export const createConversation = async ({
+  title,
+  promptSettings,
+  userId
+}: {
   title: string;
   promptSettings: string;
   userId: string;
@@ -11,7 +15,26 @@ export const createConversation = async ({ title, promptSettings, userId }: {
   });
 };
 
-export const createMessage = async ({ conversationId, role, content, timestamp }: {
+export const getConversationById = async (conversationId: string) => {
+  return prisma.conversation.findUnique({
+    where: { id: conversationId },
+    include: { messages: true }
+  });
+};
+
+export const getConversationsByUserId = async (userId: string) => {
+  return prisma.conversation.findMany({
+    where: { userId },
+    include: { messages: true }
+  });
+};
+
+export const createMessage = async ({
+  conversationId,
+  role,
+  content,
+  timestamp
+}: {
   conversationId: string;
   role: string;
   content: string;
@@ -20,4 +43,4 @@ export const createMessage = async ({ conversationId, role, content, timestamp }
   return prisma.message.create({
     data: { conversationId, role, content, timestamp }
   });
-}
+};

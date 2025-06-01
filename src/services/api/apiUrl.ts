@@ -3,7 +3,9 @@ const apiUrls = {
   types: '/api/content-type',
   audiences: '/api/content-audience',
   formats: '/api/content-format',
-  tones: '/api/content-tone'
+  tones: '/api/content-tone',
+  conversation: '/api/converse',
+  evaluate: '/api/evaluate-prompt'
 }; 
 
 export default apiUrls;
