@@ -79,7 +79,7 @@ export async function POST(req: Request) {
     const evaluationResult = await generateResponse(openAIEvalOptions);
     const jsonResult = JSON.parse(evaluationResult);
     
-    return NextResponse.json({ jsonResult });
+    return NextResponse.json(jsonResult);
   } catch (error) {
     console.error(error);
     return NextResponse.json(

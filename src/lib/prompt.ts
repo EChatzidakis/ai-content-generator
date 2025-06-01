@@ -34,6 +34,7 @@ Your evaluation includes:
 - If YES, respond with:
   {
     "ethical": false,
+    "relevant": false,
     "reason": "Brief explanation of the issue."
   }
 
@@ -50,7 +51,8 @@ Your evaluation includes:
 - If the input is both ethical and relevant, respond with:
   {
     "ethical": true,
-    "relevant": true
+    "relevant": true,
+    "reason": ''
   }
 
 Only respond with the JSON object. Do not add comments or explanations outside the JSON.

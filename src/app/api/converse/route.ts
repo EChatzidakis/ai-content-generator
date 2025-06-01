@@ -13,7 +13,8 @@ import { getContentToneById } from '@/services/db/contentToneService';
 import { getContentAudienceById } from '@/services/db/contentAudienceService';
 import {
   createConversation,
-  createMessage
+  createMessage,
+  getConversationById
 } from '@/services/db/conversationService';
 
 export async function POST(req: Request) {
@@ -69,7 +70,7 @@ export async function POST(req: Request) {
     };
 
     const systemPrompt = buildSystemPrompt(promptSettings);
-    const messages: OpenAIMessage[] = [
+    const initialMessages: OpenAIMessage[] = [
       {
         role: 'system',
         content: systemPrompt
@@ -81,18 +82,24 @@ export async function POST(req: Request) {
     ];
 
     const openAIOptions: OpenAIOptions = {
-      messages,
+      messages: initialMessages,
       model: 'gpt-4o',
       temperature: _type.temperature,
       maxTokens: 5000
     };
 
-    const result = await generateResponse(openAIOptions);
-    const responseMessage: OpenAIMessage = {
-      role: 'assistant',
-      content: result
-    };
-    messages.push(responseMessage);
+    const aiResponse = await generateResponse(openAIOptions);
+    const messages: OpenAIMessage[] = [
+      {
+        role: 'user',
+        content: userInput
+      },
+      {
+        role: 'assistant',
+        content: aiResponse
+      }
+    ];
+
     await Promise.all(
       messages.map(({ role, content }) =>
         createMessage({
@@ -104,7 +111,9 @@ export async function POST(req: Request) {
       )
     );
 
-    return NextResponse.json({ result });
+    const result = await getConversationById(conversation.id);
+
+    return NextResponse.json(result);
   } catch (error) {
     console.error(error);
     return NextResponse.json(
