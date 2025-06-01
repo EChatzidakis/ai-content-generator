@@ -32,7 +32,7 @@ model Conversation {
   user           User       @relation(fields: [userId], references: [id])
   userId         String
 
-  promptSettings Json
+  promptSettings String
 
   messages       Message[]  // relation to individual message entries
 
@@ -71,6 +71,7 @@ model ContentType {
   id                      String         @id @default(uuid())
   name                    String         @unique
   description             String
+  temperature             Float          @default(0.7) // Recommended range: 0.2 - 1.0
   categoryId              String
   defaultContentToneId      String         
   defaultContentFormatId  String

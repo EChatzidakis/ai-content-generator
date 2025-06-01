@@ -54,6 +54,7 @@ async function upsertContentTypes() {
       id: type.id,
       name: type.name,
       description: type.description,
+      temperature: type.temperature,
       defaultAudienceId: type.defaultAudienceId,
       defaultContentFormatId: type.defaultContentFormatId,
       defaultContentToneId: type.defaultContentToneId,

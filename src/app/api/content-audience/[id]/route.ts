@@ -3,7 +3,7 @@ import {
   getAudienceById,
   updateAudience,
   deleteAudience,
-} from "@/services/db/audienceService";
+} from "@/services/db/contentAudienceService";
 
 export async function GET(
   _req: Request,
