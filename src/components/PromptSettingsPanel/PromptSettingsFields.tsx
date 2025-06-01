@@ -1,24 +1,39 @@
 import React, { useEffect, useState } from 'react';
-import { Form, Select } from '@/components/UI';
+import { Select } from '@/components/UI';
 import { SelectOption } from '@/components/UI/Select';
-import {
-  useCategoryStore,
-  useTypeStore
-} from '@/store';
+import { useCategoryStore, useTypeStore } from '@/store';
 import { ContentAudience, ContentFormat, ContentTone } from '@/types/content';
 
-const PromptSettingsFormComponent: React.FC = () => {
+interface PromptSettingsFieldsProps {
+  selectedCategory: string;
+  setSelectedCategory: (selectedCategory: string) => void
+  selectedType: string;
+  setSelectedType: (selectedType: string) => void
+  selectedAudience: string;
+  setSelectedAudience: (selectedAudience: string) => void
+  selectedTone: string;
+  setSelectedTone: (selectedTone: string) => void
+  selectedFormat: string;
+  setSelectedFormat: (selectedFormat: string) => void
+}
+
+const PromptSettingsFieldsComponent: React.FC<PromptSettingsFieldsProps> = ({
+  selectedCategory,
+  setSelectedCategory,
+  selectedType,
+  setSelectedType,
+  selectedAudience,
+  setSelectedAudience,
+  selectedTone,
+  setSelectedTone,
+  selectedFormat,
+  setSelectedFormat
+}) => {
   const [categoryOptions, setCategoryOptions] = useState<SelectOption[]>([]);
   const [typeOptions, setTypeOptions] = useState<SelectOption[]>([]);
   const [toneOptions, setToneOptions] = useState<SelectOption[]>([]);
   const [formatOptions, setFormatOptions] = useState<SelectOption[]>([]);
   const [audienceOptions, setAudienceOptions] = useState<SelectOption[]>([]);
-
-  const [selectedCategory, setSelectedCategory] = useState<string>('');
-  const [selectedType, setSelectedType] = useState<string>('');
-  const [selectedAudience, setSelectedAudience] = useState<string>('');
-  const [selectedTone, setSelectedTone] = useState<string>('');
-  const [selectedFormat, setSelectedFormat] = useState<string>('');
 
   const { categories } = useCategoryStore();
   const { types } = useTypeStore();
@@ -137,7 +152,7 @@ const PromptSettingsFormComponent: React.FC = () => {
   const isAudienceSelectDisabled = audienceOptions.length === 0;
 
   return (
-    <Form>
+    <>
       <Select
         label="Category"
         options={categoryOptions}
@@ -172,8 +187,8 @@ const PromptSettingsFormComponent: React.FC = () => {
         onChange={handleSelectAudience}
         disabled={isAudienceSelectDisabled}
       />
-    </Form>
+    </>
   );
 };
 
-export const PromptSettingsForm = PromptSettingsFormComponent;
+export const PromptSettingsFields = PromptSettingsFieldsComponent;
