@@ -29,14 +29,7 @@ export const createUserWithCredentials = async (
 
 export const getUserByEmail = async (email: string) => {
   return prisma.user.findFirst({
-    where: { email },
-    select: {
-      id: true,
-      name: true,
-      email: true,
-      image_url: true,
-      provider: true
-    }
+    where: { email }
   });
 };
 
