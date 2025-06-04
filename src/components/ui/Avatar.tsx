@@ -8,7 +8,7 @@ interface AvatarProps {
 
 const MyAvatar: React.FC<AvatarProps> = ({ name = '', src = '/globe.svg' }) => {
   return (
-    <Avatar alt={name} src={src} sx={{ width: 56, height: 56 }} />
+    <Avatar alt={name} src={src} />
   );
 };
 

@@ -17,7 +17,7 @@ const AvatarInitials: React.FC<AvatarInitialsProps> = ({ name = 'U' }) => {
 
   const initials = getInitials(name);
   return (
-    <Avatar sx={{ bgcolor: deepPurple[500], width: 56, height: 56 }}>
+    <Avatar sx={{ bgcolor: deepPurple[500] }}>
       {initials}
     </Avatar>
   );

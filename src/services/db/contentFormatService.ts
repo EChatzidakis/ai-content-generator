@@ -28,10 +28,7 @@ export const getAllContentFormats = async () => {
 
 export const getContentFormatById = async (id: string) => {
   return await prisma.contentFormat.findUnique({
-    where: { id },
-    include: {
-      types: true,
-    },
+    where: { id }
   });
 };
 

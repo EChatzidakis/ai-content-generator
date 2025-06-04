@@ -19,7 +19,9 @@ export const createUserFromProvider = async ({
   });
 };
 
-export const createUserWithCredentials = async (data: Prisma.UserCreateInput) => {
+export const createUserWithCredentials = async (
+  data: Prisma.UserCreateInput
+) => {
   return prisma.user.create({
     data
   });
@@ -38,7 +40,14 @@ export const getUserByEmail = async (email: string) => {
  */
 export const getUserById = async (id: string) => {
   return prisma.user.findFirstOrThrow({
-    where: { id }
+    where: { id },
+    select: {
+      id: true,
+      name: true,
+      email: true,
+      image_url: true,
+      provider: true
+    }
   });
 };
 
@@ -62,7 +71,10 @@ export const deleteUserById = async (id: string) => {
   });
 };
 
-export const updateUserById = async (id: string, data: Partial<Parameters<typeof prisma.user.update>[0]['data']>) => {
+export const updateUserById = async (
+  id: string,
+  data: Partial<Parameters<typeof prisma.user.update>[0]['data']>
+) => {
   return prisma.user.update({
     where: { id },
     data

@@ -1,12 +1,12 @@
 // src/services/contentCategoryService.ts
-import { PrismaClient, ContentCategory } from "@prisma/client";
+import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
 /**
  * Get all content categories, optionally including related content types.
  */
-export const getAllContentCategories = async (): Promise<ContentCategory[]> => {
+export const getAllContentCategories = async () => {
   return await prisma.contentCategory.findMany({
     include: { types: true },
   });
@@ -17,10 +17,9 @@ export const getAllContentCategories = async (): Promise<ContentCategory[]> => {
  */
 export const getContentCategoryById = async (
   id: string
-): Promise<ContentCategory | null> => {
+) => {
   return await prisma.contentCategory.findUnique({
-    where: { id },
-    include: { types: true },
+    where: { id }
   });
 };
 
@@ -31,7 +30,7 @@ export const createContentCategory = async (data: {
   name: string;
   description: string;
   userId?: string; // Optional if you extend the model to associate users
-}): Promise<ContentCategory> => {
+}) => {
   return await prisma.contentCategory.create({
     data,
   });
@@ -46,7 +45,7 @@ export const updateContentCategory = async (
     name?: string;
     description?: string;
   }
-): Promise<ContentCategory> => {
+) => {
   return await prisma.contentCategory.update({
     where: { id },
     data,
@@ -58,7 +57,7 @@ export const updateContentCategory = async (
  */
 export const deleteContentCategory = async (
   id: string
-): Promise<ContentCategory> => {
+) => {
   return await prisma.contentCategory.delete({
     where: { id },
   });

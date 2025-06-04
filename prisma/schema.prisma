@@ -32,7 +32,7 @@ model Conversation {
   user           User       @relation(fields: [userId], references: [id])
   userId         String
 
-  promptSettings Json
+  promptSettings String
 
   messages       Message[]  // relation to individual message entries
 
@@ -71,14 +71,15 @@ model ContentType {
   id                      String         @id @default(uuid())
   name                    String         @unique
   description             String
+  temperature             Float          @default(0.7) // Recommended range: 0.2 - 1.0
   categoryId              String
-  defaultToneStyleId      String         
+  defaultContentToneId      String         
   defaultContentFormatId  String
   defaultAudienceId       String
 
   category                ContentCategory @relation(fields: [categoryId], references: [id])
 
-  tones                   ToneStyle[]    @relation("ManyToManyToneStyles") // Many-to-many relation with ToneStyle
+  tones                   ContentTone[]    @relation("ManyToManyContentTones") // Many-to-many relation with ContentTone
   formats                 ContentFormat[] @relation("ManyToManyContentFormats") // Many-to-many relation with ContentFormat
   audiences               Audience[]     @relation("ManyToManyAudiences") // Many-to-many relation with Audience
 
@@ -86,12 +87,12 @@ model ContentType {
   updatedAt               DateTime         @updatedAt
 }
 
-model ToneStyle {
+model ContentTone {
   id          String         @id @default(uuid())
   name        String         @unique
   description String
 
-  types       ContentType[]  @relation("ManyToManyToneStyles")
+  types       ContentType[]  @relation("ManyToManyContentTones")
 
   createdAt   DateTime        @default(now())
   updatedAt   DateTime        @updatedAt

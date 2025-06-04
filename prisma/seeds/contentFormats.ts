@@ -1,4 +1,4 @@
-import { ContentFormatSeed } from '../types/types';
+import { ContentFormatSeed } from '../types/seeds';
 
 export const contentFormats: ContentFormatSeed[] = [
   {

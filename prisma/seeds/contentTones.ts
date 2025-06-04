@@ -1,6 +1,6 @@
-import { ToneStyleSeed } from "../types/types";
+import { ContentToneSeed } from "../types/seeds";
 
-export const toneStyles: ToneStyleSeed[] = [
+export const contentTones: ContentToneSeed[] = [
   {
     id: "0c0a173e-49cf-4d26-b8ae-4a2be1a2cb98",
     name: "Formal",
