@@ -20,7 +20,7 @@
     "@emotion/styled": "^11.14.0",
     "@mui/icons-material": "^7.0.2",
     "@mui/material": "^7.0.2",
-    "@prisma/client": "^6.8.2",
+    "@prisma/client": "^6.9.0",
     "axios": "^1.7.9",
     "bcrypt": "^5.1.1",
     "dotenv": "^16.4.7",
@@ -47,7 +47,7 @@
     "eslint-config-prettier": "^10.0.1",
     "eslint-plugin-prettier": "^5.2.3",
     "prettier": "^3.4.2",
-    "prisma": "^6.8.2",
+    "prisma": "^6.9.0",
     "ts-node": "^10.9.2",
     "tsx": "^4.19.4",
     "typescript": "^5"
