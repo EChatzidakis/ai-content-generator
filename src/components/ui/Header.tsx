@@ -20,7 +20,7 @@ const FlexWrapper = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  padding: 5px 16px;
+  padding: 0 16px;
 `;
 
 const Header: React.FC<HeaderProps> = ({ children }) => {

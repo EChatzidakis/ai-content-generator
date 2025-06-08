@@ -60,35 +60,35 @@ async function upsertContentTypes() {
       defaultContentToneId: type.defaultContentToneId,
       category: { connect: { id: type.categoryId } },
       formats: {
-        connect: type.formatsIds.map((id) => ({ id })),
+        connect: type.formatsIds.map((id) => ({ id }))
       },
       tones: {
-        connect: type.toneIds.map((id) => ({ id })),
+        connect: type.toneIds.map((id) => ({ id }))
       },
       audiences: {
-        connect: type.audiencesIds.map((id) => ({ id })),
-      },
+        connect: type.audiencesIds.map((id) => ({ id }))
+      }
     };
 
     const updateData: Prisma.ContentTypeUpdateInput = {
       formats: {
         set: [],
-        connect: type.formatsIds.map((id) => ({ id })),
+        connect: type.formatsIds.map((id) => ({ id }))
       },
       tones: {
         set: [],
-        connect: type.toneIds.map((id) => ({ id })),
+        connect: type.toneIds.map((id) => ({ id }))
       },
       audiences: {
         set: [],
-        connect: type.audiencesIds.map((id) => ({ id })),
-      },
+        connect: type.audiencesIds.map((id) => ({ id }))
+      }
     };
 
     await prisma.contentType.upsert({
       where: { id: type.id },
       update: updateData,
-      create: createData,
+      create: createData
     });
   }
 }

@@ -1,15 +1,15 @@
 'use client';
 import React from 'react';
-import { PromptSettingsPanel } from '@/components/PromptSettingsPanel/PromptSettingsPanel';
-import { ResponseDisplayPanel } from '@/components/ResponseDisplayPanel/ResponseDisplayPanel';
-import { Divider } from '@/components/UI';
+import { NewConversation } from '@/components/NewConversation/NewConversation';
+import { Sidebar } from '@/components/Sidebar/Sidebar';
+import { SidebarButton } from '@/components/Sidebar/SidebarButton';
 
 const Home: React.FC = () => {
   return (
     <>
-      <PromptSettingsPanel />
-      <Divider orientation="vertical" variant="middle" />
-      <ResponseDisplayPanel />
+      <SidebarButton />
+      <Sidebar />
+      <NewConversation />
     </>
   );
 };

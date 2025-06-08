@@ -9,6 +9,23 @@ const PanelWrapper = styled.div`
   width: 50%;
   height: 100%;
   padding: 16px;
+  
+  &::-webkit-scrollbar {
+    width: 8px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: #888;
+    border-radius: 4px;
+  }
+  &::-webkit-scrollbar-thumb:hover {
+    background-color: #555;
+  }
+  &::-webkit-scrollbar-track {
+    background-color: transparent;
+  }
+  &::-webkit-scrollbar-track:hover {
+    background-color: #e0e0e0;
+  }
 `;
 
 const ResponseDisplayPanelComponent: React.FC = () => {
