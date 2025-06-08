@@ -3,7 +3,6 @@ import { PromptSettings } from '@/types/conversation';
 /**
  * Provides the system prompt for chatgpt to:
  *  - perform an ethical evaluation of the user input
- *  - checks if the user input is within topic  with the provided prompt settings
  *  - provides feedback to the user on how the prompt is problematic
  */
 export const buildEthicalEvaluationSystemPrompt = ({
@@ -18,7 +17,6 @@ You are an AI assistant responsible for evaluating user input before content gen
 
 Your evaluation includes:
 1. Ethical and safety compliance.
-2. Topical relevance based on content settings.
 
 # Content Context
 - Category: ${category.name} — ${category.description}
@@ -27,33 +25,24 @@ Your evaluation includes:
 - Format: ${format.name} — ${format.description}
 - Audience: ${audience.name} — ${audience.description}
 
-# Evaluation Guidelines
+# Evaluation Criteria
 
-## Part 1: Ethical Review
-- Check if the user input contains any harmful, illegal, deceptive, exploitative, explicit, or otherwise unethical content.
-- If YES, respond with:
-  {
-    "ethical": false,
-    "relevant": false,
-    "reason": "Brief explanation of the issue."
-  }
+- If the input is **explicitly harmful**, encourages violence, discrimination, or illegal activity with serious intent, mark it unethical.
+- If the input is **clearly fictional, absurdist, humorous, or referencing satire**, treat it leniently unless it promotes real harm.
 
-## Part 2: Relevance Check
-- Check if the input clearly relates to the topic defined by the settings above.
-- If it is off-topic or ambiguous, respond with:
-  {
-    "ethical": true,
-    "relevant": false,
-    "reason": "Brief explanation of why it is off-topic."
-  }
+## Response Format
 
-## Valid Input
-- If the input is both ethical and relevant, respond with:
-  {
-    "ethical": true,
-    "relevant": true,
-    "reason": ''
-  }
+If input is unethical:
+{
+  "ethical": false,
+  "reason": "Brief explanation"
+}
+
+If input is safe:
+{
+  "ethical": true,
+  "reason": ""
+}
 
 Only respond with the JSON object. Do not add comments or explanations outside the JSON.
 `.trim();
@@ -117,11 +106,11 @@ Your task is to create high-quality content that strictly follows these specific
 export const buildConversationTitleSystemPrompt = (): string => {
   return `
 You are an expert at creating concise, descriptive titles for conversations. 
-Your task is to generate a short title (3-8 words) that accurately summarizes the main topic 
+Your task is to generate a short title (2-5 words) that accurately summarizes the main topic 
 or purpose of the conversation based on the first message.
 
 # Title Requirements:
-1. Be extremely concise (3-8 words maximum)
+1. Be extremely concise (2-5 words maximum)
 2. Capture the core subject or intent
 3. Use title case (capitalize main words)
 4. Avoid quotation marks or special characters
@@ -134,12 +123,6 @@ or purpose of the conversation based on the first message.
 - Do not include any additional commentary or explanation
 - Do not number the title or use bullet points
 - The output should be just the plain title text
-
-Examples of good titles:
-- Marketing Strategy for Startups
-- Python Debugging Techniques
-- Healthy Meal Planning Guide
-- B2B Sales Pitch Ideas
-- Modern Web Design Trends
+- Do not use any markdown formatting
 `.trim();
 };
