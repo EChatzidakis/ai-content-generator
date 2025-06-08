@@ -4,7 +4,8 @@ const apiUrls = {
   audiences: '/api/content-audience',
   formats: '/api/content-format',
   tones: '/api/content-tone',
-  conversation: '/api/converse',
+  converse: '/api/converse',
+  conversation: '/api/conversation',
   evaluate: '/api/evaluate-prompt'
 }; 
 

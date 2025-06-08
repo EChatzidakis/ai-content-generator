@@ -18,7 +18,6 @@ export type Message = {
 
 export type PromptEval = {
   ethical: boolean;
-  relevant: boolean;
   reason: string;
 }
 
