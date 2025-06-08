@@ -4,6 +4,7 @@ import { useTypeStore } from './contentType/typeStore';
 import { useToneStore } from './contentTone/toneStore';
 import { useFormatStore } from './contentFormat/formatStore';
 import { useConversationStore } from './conversation/conversationStore';
+import { useLayoutStore } from './layout/layoutStore';
 
 export {
   useAudienceStore,
@@ -11,5 +12,6 @@ export {
   useFormatStore,
   useToneStore,
   useTypeStore,
-  useConversationStore
+  useConversationStore,
+  useLayoutStore
 }
