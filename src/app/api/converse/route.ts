@@ -111,6 +111,7 @@ export async function POST(req: Request) {
       )
     );
 
+    // TODO: Websocket this one
     const result = await getConversationById(conversation.id);
 
     return NextResponse.json(result);
