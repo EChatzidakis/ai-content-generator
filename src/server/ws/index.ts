@@ -2,6 +2,7 @@ import { WebSocketServer, WebSocket } from 'ws';
 import type { Server, IncomingMessage } from 'http';
 import { addClient, removeClient } from './broadcaster';
 import { getToken } from 'next-auth/jwt';
+import { getUserByProviderUserId } from '@/services/db/userService';
 
 const WS_PATH = '/ws/conversation-titles';
 const NEXTAUTH_SECRET = process.env.NEXTAUTH_SECRET;
@@ -36,7 +37,9 @@ export function initWebSocketServer(server: Server): WebSocketServer {
      * React DevTools, etc.) falls through to their respective handlers.
      */
     server.on('upgrade', (req, socket, head) => {
-      if (!isConversationUpgrade(req)) return;
+      if (!isConversationUpgrade(req)) {
+        return;
+      }
 
       authenticateRequest(req)
         .then((userId) => {
@@ -71,8 +74,17 @@ async function authenticateRequest(req: IncomingMessage): Promise<string> {
     secret: NEXTAUTH_SECRET
   });
 
-  if (!token?.sub) throw new Error('Unauthenticated');
-  return token.sub as string;
+  if (!token?.sub) {
+    throw new Error('Unauthenticated');
+  }
+  // Ensure the user exists in the database
+  const user = await getUserByProviderUserId(token.sub);
+  if (!user) {
+    throw new Error('User not found');
+  }
+  const userId = user.id;
+
+  return userId;
 }
 
 function parseCookies(req: IncomingMessage): Record<string, string> {
