@@ -4,9 +4,9 @@ import {
   onPromptSubmit,
   onGetConversations
 } from '@/services/api/conversation/conversationApiCalls';
-import { Conversation, PromptSettingsDTO } from '@/types/conversation';
+import { Conversation, Message, PromptSettingsDTO } from '@/types/conversation';
 
-type State = {
+type ConversationStoreState = {
   activeConversationId: string | null;
   conversations: Conversation[];
   conversationLoading: boolean;
@@ -18,9 +18,12 @@ type State = {
   setActiveConversationId: (id: string | null) => void;
   clearConversationState: () => void;
   clearConversationError: () => void;
+
+  updateConversationMessage: (conversationId: string, message: Message) => void;
+  updateConversationTitle: (conversationId: string, newTitle: string) => void;
 };
 
-export const useConversationStore = create<State>((set) => ({
+export const useConversationStore = create<ConversationStoreState>((set) => ({
   activeConversationId: null,
   conversations: [],
   conversationLoading: false,
@@ -86,7 +89,29 @@ export const useConversationStore = create<State>((set) => ({
       conversationError: { hasError: false, reason: '' },
       conversationLoading: false
     }),
-    
+
   clearConversationError: () =>
-    set({ conversationError: { hasError: false, reason: '' } })
+    set({ conversationError: { hasError: false, reason: '' } }),
+
+  updateConversationMessage: (conversationId, newMessage) => {
+    set(({ conversations }) => ({
+      conversations: conversations.map((conversation) => {
+        if (conversation.id !== conversationId) {
+          return conversation;
+        }
+
+        return {
+          ...conversation,
+          messages: [...conversation.messages, newMessage]
+        };
+      })
+    }));
+  },
+  updateConversationTitle: (conversationId, newTitle) => {
+    set((state) => ({
+      conversations: state.conversations.map((conv) =>
+        conv.id === conversationId ? { ...conv, title: newTitle } : conv
+      )
+    }));
+  }
 }));

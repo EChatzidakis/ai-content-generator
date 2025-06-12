@@ -103,7 +103,9 @@ Your task is to create high-quality content that strictly follows these specific
 /**
  * Provides the system prompt when we want to generate a title for a new conversation.
  */
-export const buildConversationTitleSystemPrompt = (): string => {
+export const buildConversationTitleSystemPrompt = (
+  userInput: string
+): string => {
   return `
 You are an expert at creating concise, descriptive titles for conversations. 
 Your task is to generate a short title (2-5 words) that accurately summarizes the main topic 
@@ -124,5 +126,8 @@ or purpose of the conversation based on the first message.
 - Do not number the title or use bullet points
 - The output should be just the plain title text
 - Do not use any markdown formatting
+
+This is the first message of the conversation:
+${userInput}
 `.trim();
 };

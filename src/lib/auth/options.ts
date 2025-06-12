@@ -66,10 +66,10 @@ export const authOptions: AuthOptions = {
 
       return false;
     },
-    async session({ session, token, user }) {
-      console.log('#################################\n');
-      console.log('session backend:', { session, token, user });
-      console.log('\n#################################\n');
+    async session({ session  }) {
+      // console.log('#################################\n');
+      // console.log('session backend:', { session, token, user });
+      // console.log('\n#################################\n');
 
       return session;
     }
