@@ -3,7 +3,10 @@ import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth/options';
 import { getUserByEmail } from '@/services/db/userService';
 import { generateResponse } from '@/lib/openai';
-import { buildSystemPrompt } from '@/lib/prompt';
+import {
+  buildSystemPrompt,
+  buildConversationTitleSystemPrompt
+} from '@/lib/prompt';
 import { PromptSettings, PromptSettingsDTO } from '@/types/conversation';
 import { OpenAIOptions, OpenAIMessage } from '@/types/openai';
 import { getContentCategoryById } from '@/services/db/contentCategoryService';
@@ -14,8 +17,10 @@ import { getContentAudienceById } from '@/services/db/contentAudienceService';
 import {
   createConversation,
   createMessage,
-  getConversationById
+  updateConversationTitleByConversationId
 } from '@/services/db/conversationService';
+import { publishNewMessage } from '@/server/ws/events/publishNewMessage';
+import { publishConversationTitle } from '@/server/ws/events/publishConversationTitle';
 
 export async function POST(req: Request) {
   try {
@@ -52,6 +57,8 @@ export async function POST(req: Request) {
       );
     }
 
+    const userId = (user.provider === 'github' ? user.provider_user_id : user.id) as string;
+
     // create a new Conversation entity
     const conversationData = {
       userId: user.id,
@@ -59,7 +66,27 @@ export async function POST(req: Request) {
       title: 'New Chat'
     };
     const conversation = await createConversation(conversationData);
+    if (!conversation) {
+      return NextResponse.json(
+        { error: 'Failed to create conversation' },
+        { status: 500 }
+      );
+    }
+    // create the initial message
+    const initialMessage = await createMessage({
+      conversationId: conversation.id,
+      role: 'user',
+      content: userInput,
+      timestamp: new Date()
+    });
+    const response = {
+      ...conversation,
+      messages: [initialMessage]
+    };
 
+    // build the system prompt and generate the AI response
+    // dont await this one, we will return the conversation
+    // and the websocket will handle the response
     const promptSettings: PromptSettings = {
       category: { name: _category.name, description: _category.description },
       type: { name: _type.name, description: _type.description },
@@ -69,52 +96,61 @@ export async function POST(req: Request) {
       userInput
     };
 
-    const systemPrompt = buildSystemPrompt(promptSettings);
-    const initialMessages: OpenAIMessage[] = [
-      {
-        role: 'system',
-        content: systemPrompt
-      },
-      {
-        role: 'user',
-        content: userInput
-      }
-    ];
-
-    const openAIOptions: OpenAIOptions = {
-      messages: initialMessages,
-      model: 'gpt-4o',
-      temperature: _type.temperature,
-      maxTokens: 5000
-    };
-
-    const aiResponse = await generateResponse(openAIOptions);
-    const messages: OpenAIMessage[] = [
-      {
-        role: 'user',
-        content: userInput
-      },
-      {
+    queueMicrotask(async () => {
+      const messageSystemPrompt = buildSystemPrompt(promptSettings);
+      const initialMessages: OpenAIMessage[] = [
+        {
+          role: 'system',
+          content: messageSystemPrompt
+        },
+        {
+          role: 'user',
+          content: userInput
+        }
+      ];
+      const openAIMessageOptions: OpenAIOptions = {
+        messages: initialMessages,
+        model: 'gpt-4o',
+        temperature: _type.temperature,
+        maxTokens: 5000
+      };
+      const aiMessageResponse = await generateResponse(openAIMessageOptions);
+      
+      publishNewMessage(userId, {
+        conversationId: conversation.id,
         role: 'assistant',
-        content: aiResponse
-      }
-    ];
+        content: aiMessageResponse
+      });
 
-    await Promise.all(
-      messages.map(({ role, content }) =>
-        createMessage({
-          conversationId: conversation.id,
-          role,
-          content,
-          timestamp: new Date()
-        })
-      )
-    );
+      const titleSystemPrompt = buildConversationTitleSystemPrompt(userInput);
+      const initialTitleMessages: OpenAIMessage[] = [
+        {
+          role: 'system',
+          content: titleSystemPrompt
+        },
+        {
+          role: 'user',
+          content: userInput
+        }
+      ];
+      const openAITitleOptions: OpenAIOptions = {
+        messages: initialTitleMessages,
+        model: 'gpt-4o',
+        temperature: _type.temperature,
+        maxTokens: 5000
+      };
+      const aiTitleResponse = await generateResponse(openAITitleOptions);
+      const updatedConversation = await updateConversationTitleByConversationId(
+        { conversationId: conversation.id, title: aiTitleResponse }
+      );
 
-    // TODO: Websocket this one
-    const result = await getConversationById(conversation.id);
+      publishConversationTitle(userId, {
+        conversationId: updatedConversation.id,
+        title: aiTitleResponse
+      });
+    });
 
-    return NextResponse.json(result);
+    return NextResponse.json(response);
   } catch (error) {
     console.error(error);
     return NextResponse.json(
