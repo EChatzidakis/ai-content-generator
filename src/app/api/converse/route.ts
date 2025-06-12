@@ -57,8 +57,6 @@ export async function POST(req: Request) {
       );
     }
 
-    const userId = (user.provider === 'github' ? user.provider_user_id : user.id) as string;
-
     // create a new Conversation entity
     const conversationData = {
       userId: user.id,
@@ -116,7 +114,7 @@ export async function POST(req: Request) {
       };
       const aiMessageResponse = await generateResponse(openAIMessageOptions);
       
-      publishNewMessage(userId, {
+      publishNewMessage(user.id, {
         conversationId: conversation.id,
         role: 'assistant',
         content: aiMessageResponse
@@ -144,7 +142,7 @@ export async function POST(req: Request) {
         { conversationId: conversation.id, title: aiTitleResponse }
       );
 
-      publishConversationTitle(userId, {
+      publishConversationTitle(user.id, {
         conversationId: updatedConversation.id,
         title: aiTitleResponse
       });
