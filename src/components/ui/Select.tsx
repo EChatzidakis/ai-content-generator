@@ -1,3 +1,4 @@
+'use client';
 import React from 'react';
 import { Select as MUISelect, MenuItem, FormControl, InputLabel } from '@mui/material';
 

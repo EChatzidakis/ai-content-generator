@@ -1,6 +1,6 @@
-"use client";
-import React from "react";
-import styled from "styled-components";
+'use client';
+import React from 'react';
+import styled from 'styled-components';
 
 interface PageWrapperProps {
   children: React.ReactNode;
@@ -19,11 +19,7 @@ const StyledPageWrapper = styled.div`
 `;
 
 const PageWrapper: React.FC<PageWrapperProps> = ({ children }) => {
-  return (
-    <StyledPageWrapper>
-      {children}
-    </StyledPageWrapper>
-  );
+  return <StyledPageWrapper>{children}</StyledPageWrapper>;
 };
 
 export default PageWrapper;
