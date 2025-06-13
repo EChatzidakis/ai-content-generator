@@ -1,3 +1,4 @@
+'use client';
 import React from 'react';
 import MuiDrawer from '@mui/material/Drawer';
 import { DrawerProps } from '@mui/material/Drawer';

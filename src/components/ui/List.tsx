@@ -1,3 +1,4 @@
+'use client';
 import React from 'react';
 import MuiList from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
