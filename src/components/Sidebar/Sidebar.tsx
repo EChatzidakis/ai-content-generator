@@ -1,4 +1,5 @@
-import React from 'react';
+'use client';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { Drawer } from '../UI';
 import { ConversationList } from '../ConversationList/ConversationList';
@@ -20,8 +21,16 @@ const DrawerTitleWrapper = styled.div`
   border-bottom: 1px solid #e0e0e0;
 `;
 
-const SidebarComponent: React.FC = () => {
-  const { isSidebarOpen, toggleSidebar } = useLayoutStore();
+type SidebarProps = {
+  isOpen?: boolean;
+};
+
+const SidebarComponent: React.FC<SidebarProps> = ({ isOpen = true }) => {
+  const { isSidebarOpen, toggleSidebar, setIsSidebarOpen } = useLayoutStore();
+
+  useEffect(() => {
+    setIsSidebarOpen(isOpen);
+  }, [isOpen, setIsSidebarOpen]);
 
   const handleToggleSidebar = () => toggleSidebar();
 
@@ -48,9 +57,7 @@ const SidebarComponent: React.FC = () => {
     >
       <DrawerContentsWrapper>
         <DrawerTitleWrapper>
-          <button onClick={handleToggleSidebar}>
-            Close
-          </button>
+          <button onClick={handleToggleSidebar}>Close</button>
         </DrawerTitleWrapper>
         <ConversationList />
       </DrawerContentsWrapper>
