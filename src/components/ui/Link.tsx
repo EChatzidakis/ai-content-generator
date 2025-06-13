@@ -1,3 +1,4 @@
+'use client';
 import React from 'react';
 import MuiLink from '@mui/material/Link';
 

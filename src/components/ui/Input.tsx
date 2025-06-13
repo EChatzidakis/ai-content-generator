@@ -1,3 +1,4 @@
+'use client';
 import React from 'react';
 import { TextFieldProps } from '@mui/material/TextField';
 import TextField from '@mui/material/TextField';

@@ -1,5 +1,4 @@
 'use client';
-
 import { Card as MuiCard, CardContent, CardProps } from '@mui/material';
 
 const Card = ({ children, ...props }: CardProps) => (

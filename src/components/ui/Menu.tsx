@@ -1,3 +1,4 @@
+'use client';
 import React, { useState, MouseEvent } from 'react';
 import MuiMenu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
