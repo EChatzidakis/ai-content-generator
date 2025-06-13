@@ -1,17 +1,10 @@
 'use client';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Accordion, Button, Form, Textarea } from '@/components/UI';
 import SendIcon from '@mui/icons-material/Send';
 import { PromptSettingsFields } from './PromptSettingsFields';
-import {
-  useAudienceStore,
-  useCategoryStore,
-  useFormatStore,
-  useToneStore,
-  useTypeStore,
-  useConversationStore
-} from '@/store';
+import { useConversationStore } from '@/store';
 import { PromptSettingsDTO } from '@/types/conversation';
 
 const PanelWrapper = styled.div`
@@ -70,24 +63,7 @@ const NewConversationComponent: React.FC = () => {
   const [selectedFormat, setSelectedFormat] = useState<string>('');
   const [userPrompt, setUserPrompt] = useState<string>('');
 
-  const { fetchCategories } = useCategoryStore();
-  const { fetchAudiences } = useAudienceStore();
-  const { fetchTones } = useToneStore();
-  const { fetchTypes } = useTypeStore();
-  const { fetchFormats } = useFormatStore();
   const { submitPrompt } = useConversationStore();
-
-  useEffect(() => {
-    handleFetchPromptSettings();
-  }, []);
-
-  const handleFetchPromptSettings = () => {
-    fetchCategories();
-    fetchAudiences();
-    fetchTones();
-    fetchFormats();
-    fetchTypes();
-  };
 
   const handleSetUserPrompt = (event: React.ChangeEvent<HTMLTextAreaElement>) =>
     setUserPrompt(event.target.value);
