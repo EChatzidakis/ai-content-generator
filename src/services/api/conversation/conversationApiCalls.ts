@@ -26,7 +26,7 @@ const onPromptSubmit = async (
   promptSettings: PromptSettingsDTO
 ): Promise<Conversation> =>
   apiClient
-    .post(apiUrls.converse, promptSettings)
+    .post(apiUrls.conversation, promptSettings)
     .then((response) => {
       if (response.status === 200) {
         const { data } = response;
@@ -70,4 +70,9 @@ const onGetConversationsById = async (
       throw error;
     });
 
-export { onEvaluatePrompt, onPromptSubmit, onGetConversations, onGetConversationsById };
+export {
+  onEvaluatePrompt,
+  onPromptSubmit,
+  onGetConversations,
+  onGetConversationsById
+};
