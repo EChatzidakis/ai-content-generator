@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react';
+'use client';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Select } from '@/components/UI';
 import { SelectOption } from '@/components/UI/Select';
 import { useCategoryStore, useTypeStore } from '@/store';
@@ -38,19 +39,7 @@ const PromptSettingsFieldsComponent: React.FC<PromptSettingsFieldsProps> = ({
   const { categories } = useCategoryStore();
   const { types } = useTypeStore();
 
-  useEffect(() => {
-    handleSetCategoryOptions();
-  }, [categories]);
-
-  useEffect(() => {
-    handleSetTypeOptions();
-  }, [selectedCategory]);
-
-  useEffect(() => {
-    handleSetOptionsBasedOnType();
-  }, [selectedType]);
-
-  const handleSetCategoryOptions = () => {
+  const handleSetCategoryOptions = useCallback(() => {
     if (categories.length === 0) {
       return;
     }
@@ -61,9 +50,9 @@ const PromptSettingsFieldsComponent: React.FC<PromptSettingsFieldsProps> = ({
       };
     });
     setCategoryOptions(_categoryOptions);
-  };
+  }, [categories]);
 
-  const handleSetTypeOptions = () => {
+  const handleSetTypeOptions = useCallback(() => {
     const _category = categories.find((item) => item.id === selectedCategory);
     if (!_category) {
       return;
@@ -76,9 +65,9 @@ const PromptSettingsFieldsComponent: React.FC<PromptSettingsFieldsProps> = ({
       return { label: type.name, value: type.id };
     });
     setTypeOptions(_typeOptions);
-  };
+  }, [categories, selectedCategory, types]);
 
-  const handleSetOptionsBasedOnType = () => {
+  const handleSetOptionsBasedOnType = useCallback(() => {
     if (selectedType === '') {
       setSelectedAudience('');
       setSelectedFormat('');
@@ -105,7 +94,19 @@ const PromptSettingsFieldsComponent: React.FC<PromptSettingsFieldsProps> = ({
     setSelectedAudience(_selectedType.defaultAudienceId);
     setSelectedFormat(_selectedType.defaultContentFormatId);
     setSelectedTone(_selectedType.defaultContentToneId);
-  };
+  }, [selectedType, types, setSelectedAudience, setSelectedFormat, setSelectedTone]);
+
+  useEffect(() => {
+    handleSetCategoryOptions();
+  }, [categories, handleSetCategoryOptions]);
+
+  useEffect(() => {
+    handleSetTypeOptions();
+  }, [selectedCategory, handleSetTypeOptions]);
+
+  useEffect(() => {
+    handleSetOptionsBasedOnType();
+  }, [selectedType, handleSetOptionsBasedOnType]);
 
   const handleSetAudienceOptions = (availableAudiences: ContentAudience[]) => {
     const _audienceOptions = availableAudiences.map((audience) => {

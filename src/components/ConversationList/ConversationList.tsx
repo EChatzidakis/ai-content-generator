@@ -1,4 +1,6 @@
-import React, { useEffect } from 'react';
+'use client';
+import React from 'react';
+import { useRouter } from 'next/navigation';
 import styled from 'styled-components';
 import { List } from '../UI';
 import { ListItemProps } from '../UI/List';
@@ -14,14 +16,10 @@ const ConversationListWrapper = styled.div`
 
 const ConversationListComponent: React.FC = () => {
   const { conversations, getConversations, setActiveConversationId } =
-    useConversationStore();
+  const { conversations, setActiveConversationId } = useConversationStore();
 
   // implement WebSocket for real-time updates on the titles of the active conversation
   useConversationTitlesWebSocket();
-
-  useEffect(() => {
-    getConversations();
-  }, [getConversations]);
 
   const conversationItems: ListItemProps[] = conversations.map(
     (conversation) => ({
