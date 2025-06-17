@@ -19,8 +19,6 @@ import {
   createMessage,
   updateConversationTitleByConversationId
 } from '@/services/db/conversationService';
-import { publishNewMessage } from '@/server/ws/events/publishNewMessage';
-import { publishConversationTitle } from '@/server/ws/events/publishConversationTitle';
 
 export async function POST(req: Request) {
   try {
@@ -113,12 +111,6 @@ export async function POST(req: Request) {
         maxTokens: 5000
       };
       const aiMessageResponse = await generateResponse(openAIMessageOptions);
-      
-      publishNewMessage(user.id, {
-        conversationId: conversation.id,
-        role: 'assistant',
-        content: aiMessageResponse
-      });
 
       const titleSystemPrompt = buildConversationTitleSystemPrompt(userInput);
       const initialTitleMessages: OpenAIMessage[] = [
