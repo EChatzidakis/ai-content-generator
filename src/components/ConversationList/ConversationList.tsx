@@ -13,6 +13,7 @@ const ConversationListWrapper = styled.div`
 `;
 
 const ConversationListComponent: React.FC = () => {
+  const router = useRouter();
   const { conversations, setActiveConversationId } = useConversationStore();
   const conversationItems: ListItemProps[] = conversations.map(
     (conversation) => ({
@@ -21,8 +22,9 @@ const ConversationListComponent: React.FC = () => {
     })
   );
 
-  const handleItemClick = (value: string) => {
-    setActiveConversationId(value);
+  const handleItemClick = (conversationId: string) => {
+    setActiveConversationId(conversationId);
+    router.push(`/conv/${conversationId}`);
   };
 
   return (

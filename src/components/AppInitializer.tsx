@@ -1,6 +1,7 @@
 'use client';
 import { useCallback, useEffect } from 'react';
 import {
+  useAuthStore,
   useAudienceStore,
   useCategoryStore,
   useFormatStore,
@@ -10,6 +11,7 @@ import {
 } from '@/store';
 
 const AppInitializer = () => {
+  const { isLoggedIn } = useAuthStore();
   const { fetchCategories } = useCategoryStore();
   const { fetchAudiences } = useAudienceStore();
   const { fetchTones } = useToneStore();
@@ -34,8 +36,10 @@ const AppInitializer = () => {
   ]);
 
   useEffect(() => {
-    handleFetchPromptSettings();
-  }, [handleFetchPromptSettings]);
+    if (isLoggedIn) {
+      handleFetchPromptSettings();
+    }
+  }, [isLoggedIn, handleFetchPromptSettings]);
 
   return null;
 };

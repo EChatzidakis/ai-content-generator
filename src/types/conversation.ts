@@ -16,6 +16,12 @@ export type Message = {
   timestamp: string;
 }
 
+export type NewMessageDTO = {
+  conversationId: string;
+  role: 'system' | 'user' | 'assistant';
+  content: string;
+}
+
 export type PromptEval = {
   ethical: boolean;
   reason: string;

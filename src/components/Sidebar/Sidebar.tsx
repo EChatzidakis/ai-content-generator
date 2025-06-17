@@ -3,7 +3,8 @@ import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { Drawer } from '../UI';
 import { ConversationList } from '../ConversationList/ConversationList';
-import { useLayoutStore } from '@/store';
+import { useAuthStore, useLayoutStore } from '@/store';
+import { SidebarButton } from './SidebarButton';
 
 const DrawerContentsWrapper = styled.div`
   display: flex;
@@ -21,16 +22,14 @@ const DrawerTitleWrapper = styled.div`
   border-bottom: 1px solid #e0e0e0;
 `;
 
-type SidebarProps = {
-  isOpen?: boolean;
-};
 
-const SidebarComponent: React.FC<SidebarProps> = ({ isOpen = true }) => {
+const SidebarComponent: React.FC = () => {
+  const { isLoggedIn } = useAuthStore();
   const { isSidebarOpen, toggleSidebar, setIsSidebarOpen } = useLayoutStore();
 
   useEffect(() => {
-    setIsSidebarOpen(isOpen);
-  }, [isOpen, setIsSidebarOpen]);
+    setIsSidebarOpen(isLoggedIn);
+  }, [isLoggedIn, setIsSidebarOpen]);
 
   const handleToggleSidebar = () => toggleSidebar();
 
@@ -47,21 +46,24 @@ const SidebarComponent: React.FC<SidebarProps> = ({ isOpen = true }) => {
   };
 
   return (
-    <Drawer
-      open={isSidebarOpen}
-      onClose={handleToggleSidebar}
-      anchor="left"
-      hideBackdrop
-      variant="persistent"
-      sx={sidebarStyles}
-    >
-      <DrawerContentsWrapper>
-        <DrawerTitleWrapper>
-          <button onClick={handleToggleSidebar}>Close</button>
-        </DrawerTitleWrapper>
-        <ConversationList />
-      </DrawerContentsWrapper>
-    </Drawer>
+    <>
+      {isLoggedIn ?? <SidebarButton />}
+      <Drawer
+        open={isSidebarOpen}
+        onClose={handleToggleSidebar}
+        anchor="left"
+        hideBackdrop
+        variant="persistent"
+        sx={sidebarStyles}
+      >
+        <DrawerContentsWrapper>
+          <DrawerTitleWrapper>
+            <button onClick={handleToggleSidebar}>Close</button>
+          </DrawerTitleWrapper>
+          <ConversationList />
+        </DrawerContentsWrapper>
+      </Drawer>
+    </>
   );
 };
 

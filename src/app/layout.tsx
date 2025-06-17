@@ -11,7 +11,6 @@ import { getServerSession } from 'next-auth/next';
 import { CssBaseline } from '@mui/material';
 import StyledComponentsRegistry from '@/lib/registry/StyledComponentsRegistry';
 import { Sidebar } from '@/components/Sidebar/Sidebar';
-import { SidebarButton } from '@/components/Sidebar/SidebarButton';
 import AppInitializer from '@/components/AppInitializer';
 
 const geistSans = Geist({
@@ -48,7 +47,6 @@ export default async function RootLayout({
             <StyledMain>
               <PageWrapper>
                 <AppInitializer />
-                <SidebarButton />
                 <Sidebar />
                 {children}
               </PageWrapper>

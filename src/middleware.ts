@@ -1,29 +1,12 @@
-import { NextResponse } from "next/server";
 import { withAuth } from "next-auth/middleware";
 
-export const middleware =  withAuth(
-  function middleware(req) {
-    if (!req.nextauth.token) {
-      return NextResponse.redirect("/signin"); // Redirect if not authenticated
-    }
-    return NextResponse.next(); // Allow the request if authenticated
+export default withAuth({
+  callbacks: {
+    authorized: ({ token }) => !!token,
   },
-  {
-    pages: {
-      signIn: "/signin", // Redirect if not authenticated
-    },
-  }
-);
+  pages: { signIn: "/signin" },
+});
 
 export const config = {
-  matcher: [
-    /*
-     * Match all request paths except for the ones starting with:
-     * - api (API routes)
-     * - _next/static (static files)
-     * - _next/image (image optimization files)
-     * - favicon.ico, sitemap.xml, robots.txt (metadata files)
-     */
-    '/((?!api|_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt).*)',
-  ],
-}
+  matcher: ["/((?!api|_next|favicon.ico|robots.txt|sitemap.xml|signin).*)"],
+};
