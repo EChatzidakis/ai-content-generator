@@ -41,3 +41,35 @@ export async function GET(
     );
   }
 }
+
+// export async function PUT(
+//   req: NextRequest,
+//   { params }: { params: { id: string } }
+// ) {
+//   try {
+//     // authenticate
+//     const session = await getServerSession(authOptions);
+//     if (!session) {
+//       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+//     }
+//     const userEmail = session.user?.email;
+//     if (!userEmail) {
+//       return NextResponse.json(
+//         { error: 'Resource not found' },
+//         { status: 404 }
+//       );
+//     }
+//     const user = await getUserByEmail(userEmail);
+//     if (!user) {
+//       return NextResponse.json({ error: 'User not found' }, { status: 404 });
+//     }
+
+//     //
+//   } catch (error) {
+//     console.error('Error updating conversation:', error);
+//     return NextResponse.json(
+//       { error: 'Failed to update conversation' },
+//       { status: 500 }
+//     );
+//   }
+// }
