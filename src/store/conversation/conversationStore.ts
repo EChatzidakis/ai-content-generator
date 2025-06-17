@@ -8,6 +8,7 @@ import { Conversation, Message, PromptSettingsDTO } from '@/types/conversation';
 
 type ConversationStoreState = {
   activeConversationId: string | null;
+  activeConversation: Conversation | null;
   conversations: Conversation[];
   conversationLoading: boolean;
   conversationListLoading: boolean;
@@ -25,6 +26,7 @@ type ConversationStoreState = {
 
 export const useConversationStore = create<ConversationStoreState>((set) => ({
   activeConversationId: null,
+  activeConversation: null,
   conversations: [],
   conversationLoading: false,
   conversationListLoading: false,
@@ -65,6 +67,7 @@ export const useConversationStore = create<ConversationStoreState>((set) => ({
       const response = await onPromptSubmit(promptSettings);
       set((state) => ({
         activeConversationId: response.id,
+        activeConversation: response,
         conversationLoading: false,
         conversations: [response, ...state.conversations]
       }));
@@ -81,7 +84,10 @@ export const useConversationStore = create<ConversationStoreState>((set) => ({
   },
 
   setActiveConversationId: (id: string | null) =>
-    set({ activeConversationId: id }),
+    set((state) => ({
+      activeConversationId: id,
+      activeConversation: state.conversations.find((c) => c.id === id) || null
+    })),
 
   clearConversationState: () =>
     set({
