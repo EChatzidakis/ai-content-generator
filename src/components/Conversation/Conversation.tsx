@@ -1,8 +1,11 @@
 'use client';
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
+import { Button, Textarea } from '@/components/UI';
+import SendIcon from '@mui/icons-material/Send';
+import { useConversationStore } from '@/store';
 
-const PanelWrapper = styled.div`
+const ConversationPageWrapper = styled.div`
   align-items: center;
   justify-content: center;
   display: flex;
@@ -31,16 +34,54 @@ const PanelWrapper = styled.div`
   }
 `;
 
+const FlexWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  margin-top: 16px;
+  width: 100%;
+  gap: 16px;
+`;
+
 const ConversationComponent: React.FC = () => {
+  const [userPrompt, setUserPrompt] = useState<string>('');
+  const { activeConversationId } = useConversationStore();
+
+  const handleSetUserPrompt = (event: React.ChangeEvent<HTMLTextAreaElement>) =>
+    setUserPrompt(event.target.value);
+
+  const handleSubmit = () => {
+    console.log('Submitting prompt:', userPrompt, 'for conversation ID:', activeConversationId);
+  };
+
   return (
-    <PanelWrapper>
+    <ConversationPageWrapper>
       <div className="flex flex-col items-center justify-center h-screen">
         <h1 className="text-2xl font-bold">Conversation Component</h1>
         <p className="mt-4">
           This is where conversation details will be displayed.
         </p>
       </div>
-    </PanelWrapper>
+      <FlexWrapper>
+        <Textarea
+          id="main-prompt"
+          multiline
+          rows={4}
+          placeholder="Your prompt..."
+          sx={{
+            backgroundColor: '#ffffff',
+            '& .MuiInputBase-root': {
+              backgroundColor: '#ffffff'
+            }
+          }}
+          value={userPrompt}
+          onChange={handleSetUserPrompt}
+          fullWidth
+        />
+        <Button onClick={handleSubmit}>
+          <SendIcon />
+        </Button>
+      </FlexWrapper>
+    </ConversationPageWrapper>
   );
 };
 
