@@ -9,12 +9,17 @@ import { getContentToneById } from '@/services/db/contentToneService';
 import { getContentAudienceById } from '@/services/db/contentAudienceService';
 import {
   createMessage,
-  getConversationById
+  getConversationById,
+  updateConversationTitleByConversationId
 } from '@/services/db/conversationService';
 import { OpenAIStream } from '@/lib/openaiStream';
-import { buildSystemPrompt } from '@/lib/prompt';
+import {
+  buildSystemPrompt,
+  buildConversationTitleSystemPrompt
+} from '@/lib/prompt';
 import { PromptSettings, PromptSettingsDTO } from '@/types/conversation';
 import { OpenAIMessage, OpenAIOptions } from '@/types/openai';
+import { generateResponse } from '@/lib/openai';
 
 export async function GET(req: NextRequest) {
   // authenticate
@@ -90,6 +95,20 @@ export async function GET(req: NextRequest) {
     maxTokens: 5000
   };
 
+  // build system prompt for conversation title
+  const conversationTitleSystemPrompt =
+    buildConversationTitleSystemPrompt(userInput);
+  const conversationTitleSystemMessages: OpenAIMessage[] = [
+    {
+      role: 'system',
+      content: conversationTitleSystemPrompt
+    },
+    {
+      role: 'user',
+      content: userInput
+    }
+  ];
+
   // create a stream response
   const encoder = new TextEncoder();
   let accumulated = '';
@@ -111,9 +130,27 @@ export async function GET(req: NextRequest) {
               content: accumulated,
               timestamp: new Date()
             });
-            
-            // Enqueue the final message to signal completion
-            // send the 'done' event along with the created message
+
+            // generate and persist the conversation title
+            const title = await generateResponse({
+              messages: conversationTitleSystemMessages,
+              model: 'gpt-4o',
+              temperature: 0.7,
+              maxTokens: 1000
+            });
+
+            await updateConversationTitleByConversationId({
+              conversationId,
+              title
+            });
+
+            // stream completion events
+            controller.enqueue(
+              encoder.encode(
+                `event: title\ndata:${JSON.stringify({ title })}\n\n`
+              )
+            );
+
             controller.enqueue(
               encoder.encode(`event: done\ndata:${JSON.stringify(created)}\n\n`)
             );

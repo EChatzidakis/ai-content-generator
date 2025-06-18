@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { Message } from '@/types/conversation';
+import { useConversationStore } from '@/store/conversation/conversationStore';
 
 interface StreamState {
   assistantReply: string;
@@ -30,6 +31,13 @@ export const useStreamStore = create<StreamState>((set, get) => ({
       }));
     };
 
+    es.addEventListener('title', (e) => {
+      const { title } = JSON.parse(e.data);
+      useConversationStore
+        .getState()
+        .updateConversationTitle(conversationId, title);
+    });
+
     es.addEventListener('done', (e) => {
       const dbMessage = JSON.parse(e.data) as Message;
       es.close();
@@ -43,12 +51,12 @@ export const useStreamStore = create<StreamState>((set, get) => ({
 
       if (onComplete) {
         onComplete?.({
-        id: crypto.randomUUID(),          // temporary id
-        role: 'assistant',
-        content: get().assistantReply,
-        timestamp: new Date().toISOString(),
-        conversationId
-      });
+          id: crypto.randomUUID(), // temporary id
+          role: 'assistant',
+          content: get().assistantReply,
+          timestamp: new Date().toISOString(),
+          conversationId
+        });
       }
     };
 
