@@ -1,6 +1,7 @@
 'use client';
 import { useCallback, useEffect } from 'react';
 import {
+  useAuthStore,
   useAudienceStore,
   useCategoryStore,
   useFormatStore,
@@ -8,14 +9,17 @@ import {
   useTypeStore,
   useConversationStore
 } from '@/store';
+import { useRouter } from 'next/navigation';
 
 const AppInitializer = () => {
+  const router = useRouter();
+  const { isLoggedIn } = useAuthStore();
   const { fetchCategories } = useCategoryStore();
   const { fetchAudiences } = useAudienceStore();
   const { fetchTones } = useToneStore();
   const { fetchTypes } = useTypeStore();
   const { fetchFormats } = useFormatStore();
-  const { getConversations } = useConversationStore();
+  const { activeConversationId, getConversations } = useConversationStore();
 
   const handleFetchPromptSettings = useCallback(() => {
     fetchCategories();
@@ -34,9 +38,23 @@ const AppInitializer = () => {
   ]);
 
   useEffect(() => {
-    handleFetchPromptSettings();
-  }, [handleFetchPromptSettings]);
+    if (isLoggedIn) {
+      handleFetchPromptSettings();
+    }
+  }, [isLoggedIn, handleFetchPromptSettings]);
 
+  const handleRedirectToConversation = useCallback(() => {
+    if (activeConversationId) {
+      router.push(`/conv/${activeConversationId}`);
+    }
+  }, [activeConversationId, router]);
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      handleRedirectToConversation();
+    }
+  }, [isLoggedIn, handleRedirectToConversation]);
+  
   return null;
 };
 

@@ -32,7 +32,6 @@ export const getConversationsByUserId = async (userId: string) => {
   });
 };
 
-
 export const updateConversationTitleByConversationId = async ({
   conversationId,
   title
@@ -44,7 +43,7 @@ export const updateConversationTitleByConversationId = async ({
     where: { id: conversationId },
     data: { title }
   });
-}
+};
 
 export const createMessage = async ({
   conversationId,
@@ -61,3 +60,13 @@ export const createMessage = async ({
     data: { conversationId, role, content, timestamp }
   });
 };
+
+export const getMessagesByConversationId = async (conversationId: string) => {
+  return prisma.message.findMany({
+    where: { conversationId },
+    orderBy: {
+      timestamp: 'asc'
+    }
+  });
+};
+

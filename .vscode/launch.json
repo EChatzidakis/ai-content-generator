@@ -23,12 +23,14 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Debug server.ts",
+      "name": "Debug Next.js Backend",
       "type": "node",
       "request": "launch",
-      "runtimeExecutable": "npx",
-      "runtimeArgs": ["tsx", "server.ts"],
-      "cwd": "${workspaceFolder}",
+      "program": "${workspaceFolder}/node_modules/next/dist/bin/next",
+      "args": ["dev"],
+      "env": {
+        "NODE_OPTIONS": "--inspect"
+      },
       "console": "integratedTerminal",
       "internalConsoleOptions": "neverOpen"
     }

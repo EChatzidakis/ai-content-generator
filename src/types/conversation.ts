@@ -3,7 +3,7 @@ export type Conversation = {
   title: string;
   messages: Message[];
   userId: string;
-  promptSettings: PromptSettingsDTO;
+  promptSettings: string; // JSON string of PromptSettingsDTO
   created_at: string;
   updated_at: string;
 }
@@ -14,6 +14,12 @@ export type Message = {
   role: 'system' | 'user' | 'assistant';
   content: string;
   timestamp: string;
+}
+
+export type NewMessageDTO = {
+  conversationId: string;
+  role: 'system' | 'user' | 'assistant';
+  content: string;
 }
 
 export type PromptEval = {
