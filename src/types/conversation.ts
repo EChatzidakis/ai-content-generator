@@ -3,7 +3,7 @@ export type Conversation = {
   title: string;
   messages: Message[];
   userId: string;
-  promptSettings: PromptSettingsDTO;
+  promptSettings: string; // JSON string of PromptSettingsDTO
   created_at: string;
   updated_at: string;
 }
