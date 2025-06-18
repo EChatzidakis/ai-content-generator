@@ -5,6 +5,7 @@ import {
   onGetConversations
 } from '@/services/api/conversation/conversationApiCalls';
 import { Conversation, Message, PromptSettingsDTO } from '@/types/conversation';
+import { useStreamStore } from '@/store/stream/streamStore';
 
 type ConversationStoreState = {
   activeConversationId: string | null;
@@ -71,6 +72,16 @@ export const useConversationStore = create<ConversationStoreState>((set) => ({
         conversationLoading: false,
         conversations: [response, ...state.conversations]
       }));
+
+      // stream the response
+      const { startStream } = useStreamStore.getState();
+
+      startStream(response.id, (dbRow) => {
+        // dbRow is the canonical Message received from `event: done`
+        useConversationStore
+          .getState()
+          .updateConversationMessage(response.id, dbRow);
+      });
     } catch (err: unknown) {
       console.error('Error on prompt submission:', err);
       set({
@@ -101,16 +112,14 @@ export const useConversationStore = create<ConversationStoreState>((set) => ({
 
   updateConversationMessage: (conversationId, newMessage) => {
     set(({ conversations }) => ({
-      conversations: conversations.map((conversation) => {
-        if (conversation.id !== conversationId) {
-          return conversation;
-        }
-
-        return {
-          ...conversation,
-          messages: [...conversation.messages, newMessage]
-        };
-      })
+      conversations: conversations.map((conversation) =>
+        conversation.id === conversationId
+          ? {
+              ...conversation,
+              messages: [...conversation.messages, newMessage]
+            }
+          : conversation
+      )
     }));
   },
   updateConversationTitle: (conversationId, newTitle) => {
