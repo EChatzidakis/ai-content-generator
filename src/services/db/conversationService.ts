@@ -60,3 +60,13 @@ export const createMessage = async ({
     data: { conversationId, role, content, timestamp }
   });
 };
+
+export const getMessagesByConversationId = async (conversationId: string) => {
+  return prisma.message.findMany({
+    where: { conversationId },
+    orderBy: {
+      timestamp: 'asc'
+    }
+  });
+};
+
