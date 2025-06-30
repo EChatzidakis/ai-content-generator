@@ -1,5 +1,6 @@
 'use client';
 import React, { useState, MouseEvent } from 'react';
+import styled from 'styled-components';
 import MuiMenu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 
@@ -7,6 +8,27 @@ interface DropdownProps {
   children: React.ReactNode;
   listItems: { label: React.ReactNode; onClick?: () => void }[];
 }
+
+const StyledMenu = styled(MuiMenu)`
+  /* style the underlying MUI Paper */
+  & .MuiPaper-root {
+    background-color: ${({ theme }) => theme.colors.surface};
+    color: ${({ theme }) => theme.colors.text};
+    border: 1px solid ${({ theme }) => theme.colors.border};
+    border-radius: ${({ theme }) => theme.borderRadius};
+    box-shadow: none; /* flatten elevation */
+    padding: ${({ theme }) => theme.spacing(1)} 0; /* vertical trim */
+  }
+`;
+
+const StyledMenuItem = styled(MenuItem)`
+  font-size: ${({ theme }) => theme.fontSizes.base};
+  padding: ${({ theme }) => `${theme.spacing(3)} ${theme.spacing(6)}`};
+
+  &:hover {
+    background-color: ${({ theme }) => theme.colors.hover};
+  }
+`;
 
 const Menu: React.FC<DropdownProps> = ({ children, listItems }) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -21,10 +43,14 @@ const Menu: React.FC<DropdownProps> = ({ children, listItems }) => {
 
   return (
     <>
-      <span onClick={handleOpen} style={{ cursor: 'pointer', display: 'inline-block' }}>
+      <span
+        onClick={handleOpen}
+        style={{ cursor: 'pointer', display: 'inline-block' }}
+      >
         {children}
       </span>
-      <MuiMenu
+
+      <StyledMenu
         anchorEl={anchorEl}
         open={Boolean(anchorEl)}
         onClose={handleClose}
@@ -32,7 +58,7 @@ const Menu: React.FC<DropdownProps> = ({ children, listItems }) => {
         transformOrigin={{ vertical: 'top', horizontal: 'right' }}
       >
         {listItems.map((item, idx) => (
-          <MenuItem
+          <StyledMenuItem
             key={idx}
             onClick={() => {
               handleClose();
@@ -40,9 +66,9 @@ const Menu: React.FC<DropdownProps> = ({ children, listItems }) => {
             }}
           >
             {item.label}
-          </MenuItem>
+          </StyledMenuItem>
         ))}
-      </MuiMenu>
+      </StyledMenu>
     </>
   );
 };

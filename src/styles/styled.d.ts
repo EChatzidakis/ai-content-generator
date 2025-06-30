@@ -6,6 +6,7 @@ declare module 'styled-components' {
     colors: {
       background: string;
       surface: string;
+      surfaceAlt?: string;
       primary: string;
       secondary: string;
       success: string;
@@ -13,6 +14,7 @@ declare module 'styled-components' {
       error: string;
       text: string;
       textMuted: string;
+      textSubtle: string;
       border: string;
       hover: string;
     };
@@ -22,6 +24,7 @@ declare module 'styled-components' {
       xs: string;
       sm: string;
       base: string;
+      md: string;
       lg: string;
       xl: string;
       '2xl': string;

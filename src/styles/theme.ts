@@ -1,49 +1,23 @@
 import { DefaultTheme } from 'styled-components';
 
-// export const theme: DefaultTheme = {
-//   colors: {
-//     background: '#121212',
-//     surface: '#1E1E1E',
-//     primary: '#90CAF9',
-//     secondary: '#F48FB1',
-//     success: '#81C784',
-//     warning: '#FFB74D',
-//     error: '#E57373',
-//     text: '#E0E0E0',
-//     textMuted: '#BDBDBD',
-//     border: '#2C2C2C',
-//     hover: '#2A2A2A',
-//   },
-//   spacing: (factor: number) => `${0.25 * factor}rem`,
-//   borderRadius: '0.5rem',
-//   fontSizes: {
-//     xs: '0.75rem',
-//     sm: '0.875rem',
-//     base: '1rem',
-//     lg: '1.125rem',
-//     xl: '1.25rem',
-//     '2xl': '1.5rem',
-//   },
-// };
-
 // theme.ts  – Soft-Dark neutrals
 export const theme: DefaultTheme = {
   colors: {
-    background: '#1A1A1A', // softer charcoal
-    surface: '#252525', // cards & sheets
-    border: '#353535',
-    hover: '#2F2F2F',
+    background: '#EDEDF4',
+    surface: '#F7F7FB',
+    surfaceAlt: '#ECECF3',
+    border: '#D4D4E0',
+    hover: '#E2E2F0',
 
-    // Text
-    text: '#EEEEEE',
-    textMuted: '#CCCCCC',
+    text: '#2A2B38',
+    textMuted: '#5F6170',
+    textSubtle: '#8A8BA0',
 
-    // Accents stay as-is for now
-    primary: '#90CAF9',
-    secondary: '#F48FB1',
-    success: '#81C784',
-    warning: '#FFB74D',
-    error: '#E57373'
+    primary: '#6F7BFF',
+    secondary: '#B18BFF',
+    success: '#4BAE8C',
+    warning: '#F0B65A',
+    error: '#E1787A'
   },
   spacing: (factor: number) => `${0.25 * factor}rem`,
   borderRadius: '0.5rem',
@@ -51,6 +25,7 @@ export const theme: DefaultTheme = {
     xs: '0.75rem',
     sm: '0.875rem',
     base: '1rem',
+    md:  '1rem',
     lg: '1.125rem',
     xl: '1.25rem',
     '2xl': '1.5rem'

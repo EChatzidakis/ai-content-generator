@@ -6,36 +6,60 @@ import AppBar from '@mui/material/AppBar';
 import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh';
 
 interface HeaderProps {
-  children: React.ReactNode;
+  children?: React.ReactNode;
 }
 
-const TitleFlexWrapper = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  width: 125px;
-  padding: 16px;
+// to acommodate for the avatar height and padding
+const HEADER_HEIGHT_PX = 54;
+
+const StyledAppBar = styled(AppBar).attrs({
+  elevation: 0,
+  position: 'static'
+})`
+  background-color: ${({ theme }) => theme.colors.surface};
+  color: ${({ theme }) => theme.colors.text};
+  border-bottom: 1px solid ${({ theme }) => theme.colors.border};
+  min-height: ${HEADER_HEIGHT_PX}px;
+  display: flex; /* enables direct flex-centering of inner wrapper */
+  justify-content: center;
 `;
 
 const FlexWrapper = styled.div`
+  width: 100%;
   display: flex;
-  flex-direction: row;
   justify-content: space-between;
-  padding: 0 16px;
+  align-items: center;
+  padding: 0 ${({ theme }) => theme.spacing(4)};
+  height: ${HEADER_HEIGHT_PX}px; /* keeps content vertically centred */
 `;
 
-const Header: React.FC<HeaderProps> = ({ children }) => {
-  return (
-    <AppBar position="static">
-      <FlexWrapper>
-        <TitleFlexWrapper>
-          <AutoFixHighIcon />
-          <Link href="/">LexiGen</Link>
-        </TitleFlexWrapper>
-        {children}
-      </FlexWrapper>
-    </AppBar>
-  );
-};
+const TitleFlexWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  gap: ${({ theme }) => theme.spacing(2)};
+`;
+
+const HeaderLink = styled(Link)`
+  font-size: ${({ theme }) => theme.fontSizes.lg};
+  font-weight: 600;
+  color: ${({ theme }) => theme.colors.text};
+  text-decoration: none;
+
+  &:hover {
+    color: ${({ theme }) => theme.colors.primary};
+  }
+`;
+
+const Header: React.FC<HeaderProps> = ({ children }) => (
+  <StyledAppBar>
+    <FlexWrapper>
+      <TitleFlexWrapper>
+        <AutoFixHighIcon fontSize="large" />
+        <HeaderLink href="/">LexiGen</HeaderLink>
+      </TitleFlexWrapper>
+      {children}
+    </FlexWrapper>
+  </StyledAppBar>
+);
 
 export default Header;

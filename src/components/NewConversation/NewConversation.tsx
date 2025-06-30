@@ -102,7 +102,6 @@ const NewConversationComponent: React.FC = () => {
           <FlexWrapper>
             <Textarea
               id="main-prompt"
-              multiline
               rows={4}
               placeholder="Your prompt..."
               sx={{

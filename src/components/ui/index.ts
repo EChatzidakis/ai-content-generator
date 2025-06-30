@@ -13,7 +13,7 @@ export { default as Link } from './Link';
 export { default as Menu } from './Menu';
 export { default as PageWrapper } from './PageWrapper';
 export { Select } from './Select';
-export { Textarea } from './Textarea';
+export { default as Textarea } from './Textarea';
 export { default as Tooltip } from './Tooltip';
 export { Drawer } from './Drawer';
 export { List } from './List';
