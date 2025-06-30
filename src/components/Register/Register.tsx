@@ -3,7 +3,17 @@ import axios from 'axios';
 import React, { useState } from 'react';
 import { signIn } from 'next-auth/react';
 import styled from 'styled-components';
-import { Button, Card, Input } from '../../components/UI';
+import { Button, Input } from '../../components/UI';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+
+const CardHeaderWrapper = styled.div`
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  padding: ${({ theme }) => theme.spacing(2)};
+`;
 
 const CardTitle = styled.h2`
   font-size: 1.5rem;
@@ -12,17 +22,29 @@ const CardTitle = styled.h2`
   text-align: center;
 `;
 
+const FieldsStack = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${({ theme }) => theme.spacing(2)}; /* adjust here if needed */
+`;
+
+const ButtonWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  padding-top: ${({ theme }) => theme.spacing(6)};
+`;
+
 interface RegisterComponentProps {
   handleSetShowRegister: () => void;
 }
 
-const RegisterComponent: React.FC<RegisterComponentProps> = ({ handleSetShowRegister }) => {
+const RegisterComponent: React.FC<RegisterComponentProps> = ({
+  handleSetShowRegister
+}) => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-
-  console.log(handleSetShowRegister);
 
   const handleRegister = async () => {
     setIsLoading(true);
@@ -62,7 +84,7 @@ const RegisterComponent: React.FC<RegisterComponentProps> = ({ handleSetShowRegi
   };
 
   const registerPanel = (
-    <>
+    <FieldsStack>
       <Input
         placeholder="Username"
         value={name}
@@ -79,14 +101,10 @@ const RegisterComponent: React.FC<RegisterComponentProps> = ({ handleSetShowRegi
         onChange={handleRegisterPasswordOnChange}
         type="password"
       />
-      <div>
-        <p>
-          Your account, with all its data, will be deleted a month after the
-          account creation
-        </p>
-      </div>
-      <Button onClick={handleRegister}>Register</Button>
-    </>
+      <ButtonWrapper>
+        <Button onClick={handleRegister}>Register</Button>
+      </ButtonWrapper>
+    </FieldsStack>
   );
 
   const cardBody = registerPanel;
@@ -94,10 +112,19 @@ const RegisterComponent: React.FC<RegisterComponentProps> = ({ handleSetShowRegi
 
   console.log('isLoading: ', isLoading);
   return (
-    <Card sx={{ width: '400px', margin: 'auto', padding: '20px' }}>
-      <CardTitle>{cardTitle}</CardTitle>
+    <>
+      <CardHeaderWrapper>
+        <Button
+          variant="text"
+          onClick={handleSetShowRegister}
+          startIcon={<ArrowBackIcon />}
+        >
+          Back
+        </Button>
+        <CardTitle>{cardTitle}</CardTitle>
+      </CardHeaderWrapper>
       {cardBody}
-    </Card>
+    </>
   );
 };
 

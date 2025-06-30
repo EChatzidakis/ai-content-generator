@@ -86,12 +86,6 @@ const SignInComponent: React.FC<SignInComponentProps> = ({
       {credentials}
       <Divider>OR</Divider>
       <Button fullWidth onClick={handleSetShowRegister}>Register using your email</Button>
-      <div className="text-center">
-        <p>
-          Your account, with all its data, will be deleted a month after the
-          account creation
-        </p>
-      </div>
     </>
   );
 
