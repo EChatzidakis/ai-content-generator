@@ -1,11 +1,11 @@
 'use client';
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { Accordion, Button, Form, Textarea } from '@/components/UI';
-import SendIcon from '@mui/icons-material/Send';
+import { Accordion, Form } from '@/components/UI';
 import { PromptSettingsFields } from './PromptSettingsFields';
 import { useConversationStore } from '@/store';
 import { PromptSettingsDTO } from '@/types/conversation';
+import { PromptInput } from '@/components/PromptInput/PromptInput';
 
 const PanelWrapper = styled.div`
   align-items: center;
@@ -45,14 +45,6 @@ const FormWrapper = styled.div`
   width: 100%;
   margin: 0 auto;
   padding: 16px;
-`;
-
-const FlexWrapper = styled.div`
-  display: flex;
-  flex-direction: row;
-  margin-top: 16px;
-  width: 100%;
-  gap: 16px;
 `;
 
 const NewConversationComponent: React.FC = () => {
@@ -99,25 +91,13 @@ const NewConversationComponent: React.FC = () => {
               setSelectedFormat={setSelectedFormat}
             />
           </Accordion>
-          <FlexWrapper>
-            <Textarea
-              id="main-prompt"
-              rows={4}
-              placeholder="Your prompt..."
-              sx={{
-                backgroundColor: '#ffffff',
-                '& .MuiInputBase-root': {
-                  backgroundColor: '#ffffff'
-                }
-              }}
-              value={userPrompt}
-              onChange={handleSetUserPrompt}
-              fullWidth
-            />
-            <Button onClick={handleSubmit}>
-              <SendIcon />
-            </Button>
-          </FlexWrapper>
+          <PromptInput
+            value={userPrompt}
+            onChange={handleSetUserPrompt}
+            onSubmit={handleSubmit}
+            placeholder="Your prompt..."
+            rows={4}
+          />
         </Form>
       </FormWrapper>
     </PanelWrapper>

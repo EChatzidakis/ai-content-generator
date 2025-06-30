@@ -1,10 +1,9 @@
 'use client';
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { Button, Textarea } from '@/components/UI';
-import SendIcon from '@mui/icons-material/Send';
 import { useConversationStore } from '@/store';
 import { ConversationPanel } from './ConversationPanel';
+import { PromptInput } from '@/components/PromptInput/PromptInput';
 
 const ConversationPageWrapper = styled.div`
   align-items: center;
@@ -33,15 +32,6 @@ const ConversationPageWrapper = styled.div`
   }
 `;
 
-const FlexWrapper = styled.div`
-  display: flex;
-  flex-direction: row;
-  max-width: 850px;
-  width: 100%;
-  gap: 16px;
-  padding: 0 16px 16px 16px;
-`;
-
 const ConversationComponent: React.FC = () => {
   const [userPrompt, setUserPrompt] = useState<string>('');
   const { activeConversationId } = useConversationStore();
@@ -56,25 +46,13 @@ const ConversationComponent: React.FC = () => {
   return (
     <ConversationPageWrapper>
       <ConversationPanel />
-      <FlexWrapper>
-        <Textarea
-          id="main-prompt"
-          rows={4}
-          placeholder="Your prompt..."
-          sx={{
-            backgroundColor: '#ffffff',
-            '& .MuiInputBase-root': {
-              backgroundColor: '#ffffff'
-            }
-          }}
-          value={userPrompt}
-          onChange={handleSetUserPrompt}
-          fullWidth
-        />
-        <Button onClick={handleSubmit}>
-          <SendIcon />
-        </Button>
-      </FlexWrapper>
+      <PromptInput
+        value={userPrompt}
+        onChange={handleSetUserPrompt}
+        onSubmit={handleSubmit}
+        placeholder="Your prompt..."
+        rows={4}
+      />
     </ConversationPageWrapper>
   );
 };
