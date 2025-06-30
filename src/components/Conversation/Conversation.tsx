@@ -4,17 +4,16 @@ import styled from 'styled-components';
 import { Button, Textarea } from '@/components/UI';
 import SendIcon from '@mui/icons-material/Send';
 import { useConversationStore } from '@/store';
+import { ConversationPanel } from './ConversationPanel';
 
 const ConversationPageWrapper = styled.div`
   align-items: center;
   justify-content: center;
   display: flex;
   flex-direction: column;
-  gap: 16px;
   width: 100%;
   height: 100%;
-  padding: 16px;
-  overflow-y: auto;
+  margin: auto;
 
   &::-webkit-scrollbar {
     width: 8px;
@@ -37,9 +36,10 @@ const ConversationPageWrapper = styled.div`
 const FlexWrapper = styled.div`
   display: flex;
   flex-direction: row;
-  margin-top: 16px;
+  max-width: 850px;
   width: 100%;
   gap: 16px;
+  padding: 0 16px 16px 16px;
 `;
 
 const ConversationComponent: React.FC = () => {
@@ -55,12 +55,7 @@ const ConversationComponent: React.FC = () => {
 
   return (
     <ConversationPageWrapper>
-      <div className="flex flex-col items-center justify-center h-screen">
-        <h1 className="text-2xl font-bold">Conversation Component</h1>
-        <p className="mt-4">
-          This is where conversation details will be displayed.
-        </p>
-      </div>
+      <ConversationPanel />
       <FlexWrapper>
         <Textarea
           id="main-prompt"

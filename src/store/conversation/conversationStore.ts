@@ -111,16 +111,20 @@ export const useConversationStore = create<ConversationStoreState>((set) => ({
     set({ conversationError: { hasError: false, reason: '' } }),
 
   updateConversationMessage: (conversationId, newMessage) => {
-    set(({ conversations }) => ({
-      conversations: conversations.map((conversation) =>
-        conversation.id === conversationId
-          ? {
-              ...conversation,
-              messages: [...conversation.messages, newMessage]
-            }
-          : conversation
-      )
-    }));
+    set((state) => {
+      const conversations = state.conversations.map((c) =>
+        c.id === conversationId
+          ? { ...c, messages: [...c.messages, newMessage] }
+          : c
+      );
+
+      const activeConversation =
+        state.activeConversation?.id === conversationId
+          ? conversations.find((c) => c.id === conversationId) || null
+          : state.activeConversation;
+
+      return { conversations, activeConversation };
+    });
   },
   updateConversationTitle: (conversationId, newTitle) => {
     set((state) => ({

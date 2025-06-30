@@ -41,7 +41,7 @@ export const useStreamStore = create<StreamState>((set, get) => ({
     es.addEventListener('done', (e) => {
       const dbMessage = JSON.parse(e.data) as Message;
       es.close();
-      set({ eventSource: null });
+      set({ assistantReply: '', eventSource: null }); // reset buffer
       onComplete?.(dbMessage);
     });
 
