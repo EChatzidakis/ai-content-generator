@@ -1,21 +1,40 @@
 :root {
-  --background: #f5ebe0;
-  --foreground: #171717;
+  /* ── colour palette from theme.ts ─────────────────────────────── */
+  --color-background: #EDEDF4; /* theme.colors.background */
+  --color-surface: #F7F7FB;    /* theme.colors.surface    */
+  --color-border: #D4D4E0;     /* theme.colors.border     */
+  --color-text: #2A2B38;       /* theme.colors.text       */
+  --color-text-muted: #5F6170; /* theme.colors.textMuted  */
+  --color-primary: #6F7BFF;    /* theme.colors.primary    */
 }
 
+/* Dark‑mode token placeholders – refine later if you add a dark palette */
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #f5ebe0;
-    --foreground: #171717;
+    --color-background: #1B1C22;
+    --color-surface: #25262E;
+    --color-border: #333542;
+    --color-text: #F0F0FA;
+    --color-text-muted: #A0A1B0;
+    --color-primary: #6F7BFF;
   }
 }
 
+/* ── global reset / base styles ──────────────────────────────────────── */
+html,
 body {
-  color: var(--foreground);
-  background: var(--background) !important;
-  font-family: Arial, Helvetica, sans-serif;
+  padding: 0;
+  margin: 0;
+  color: var(--color-text);
+  background: var(--color-background);
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 
+/* Utility: viewport height minus the fixed 56‑px header */
 .screen-minus-header {
-  height: calc(100vh - 64px);
+  height: calc(100vh - 56px);
 }
