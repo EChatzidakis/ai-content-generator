@@ -1,9 +1,16 @@
 'use client';
 import React, { useCallback, useEffect, useState } from 'react';
+import styled from 'styled-components';
 import { Select } from '@/components/UI';
 import { SelectOption } from '@/components/UI/Select';
 import { useCategoryStore, useTypeStore } from '@/store';
 import { ContentAudience, ContentFormat, ContentTone } from '@/types/content';
+
+const FieldsStack = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${({ theme }) => theme.spacing(2)}; /* adjust here if needed */
+`;
 
 interface PromptSettingsFieldsProps {
   selectedCategory: string;
@@ -153,7 +160,7 @@ const PromptSettingsFieldsComponent: React.FC<PromptSettingsFieldsProps> = ({
   const isAudienceSelectDisabled = audienceOptions.length === 0;
 
   return (
-    <>
+    <FieldsStack>
       <Select
         label="Category"
         options={categoryOptions}
@@ -188,7 +195,7 @@ const PromptSettingsFieldsComponent: React.FC<PromptSettingsFieldsProps> = ({
         onChange={handleSelectAudience}
         disabled={isAudienceSelectDisabled}
       />
-    </>
+    </FieldsStack>
   );
 };
 
