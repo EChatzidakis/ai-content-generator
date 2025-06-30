@@ -40,9 +40,9 @@ export default async function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <CssBaseline />
-        <AuthProvider session={session}>
-          <StyledComponentsRegistry>
+        <StyledComponentsRegistry>
+          <CssBaseline />
+          <AuthProvider session={session}>
             <PageHeader />
             <StyledMain>
               <PageWrapper>
@@ -51,8 +51,8 @@ export default async function RootLayout({
                 {children}
               </PageWrapper>
             </StyledMain>
-          </StyledComponentsRegistry>
-        </AuthProvider>
+          </AuthProvider>
+        </StyledComponentsRegistry>
       </body>
     </html>
   );

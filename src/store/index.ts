@@ -6,6 +6,7 @@ import { useToneStore } from './contentTone/toneStore';
 import { useFormatStore } from './contentFormat/formatStore';
 import { useConversationStore } from './conversation/conversationStore';
 import { useLayoutStore } from './layout/layoutStore';
+import { useStreamStore } from './stream/streamStore';
 
 export {
   useAuthStore,
@@ -15,5 +16,6 @@ export {
   useToneStore,
   useTypeStore,
   useConversationStore,
-  useLayoutStore
+  useLayoutStore,
+  useStreamStore
 }
